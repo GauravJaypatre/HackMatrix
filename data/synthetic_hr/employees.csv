@@ -1,0 +1,201 @@
+employee_id,name,role,department,hire_date,access_level
+EMP_0001,Allison Hill,Compliance Director,Corporate Banking,2016-11-24,L1
+EMP_0002,Brian Yang,IT Security Analyst,Operations,2019-08-22,L2
+EMP_0003,Javier Johnson,KYC Analyst,Compliance,2016-11-10,L1
+EMP_0004,Lance Hoffman,Compliance Director,Audit,2021-02-02,L1
+EMP_0005,Kimberly Robinson,Senior Advisor,Treasury,2020-01-05,L1
+EMP_0006,Sean Blake,Relationship Manager,Corporate Banking,2016-05-11,L2
+EMP_0007,Gina Moore,KYC Analyst,Audit,2023-02-21,L5
+EMP_0008,Ashley James,Relationship Manager,Audit,2018-01-20,L2
+EMP_0009,Lindsey Roman,IT Security Analyst,Audit,2021-03-17,L4
+EMP_0010,Calvin Nielsen,KYC Analyst,IT Security,2015-09-02,L5
+EMP_0011,Sandra Montgomery,Operations Specialist,Retail Banking,2022-05-01,L2
+EMP_0012,Corey Jones,IT Security Analyst,Treasury,2020-08-16,L3
+EMP_0013,Dylan Miller,Operations Specialist,Compliance,2016-12-24,L2
+EMP_0014,Jamie Chavez,Treasury Analyst,Wealth Management,2022-02-04,L1
+EMP_0015,Jacob Clark,Account Manager,Treasury,2017-04-09,L1
+EMP_0016,Melinda Jones,Branch Manager,Wealth Management,2020-05-26,L5
+EMP_0017,Nicholas Martin,Operations Specialist,Retail Banking,2018-03-24,L4
+EMP_0018,Timothy Watts,Teller,Corporate Banking,2016-11-13,L4
+EMP_0019,Sarah Parsons,Account Manager,Audit,2016-12-12,L3
+EMP_0020,Renee Morales,Audit Associate,Customer Service,2015-07-25,L3
+EMP_0021,Tommy Walter,Senior Advisor,Risk Management,2017-09-04,L1
+EMP_0022,Jonathan Wilkerson,Relationship Manager,Risk Management,2020-06-20,L3
+EMP_0023,Derek Wright,Account Manager,Risk Management,2019-10-11,L1
+EMP_0024,Nicole Patterson,Risk Analyst,Operations,2019-12-18,L4
+EMP_0025,Daniel Bright,Compliance Director,Wealth Management,2019-05-03,L2
+EMP_0026,Peter Callahan Jr.,Branch Manager,Wealth Management,2016-05-12,L2
+EMP_0027,Jennifer Brown,Compliance Director,Operations,2018-03-31,L1
+EMP_0028,Julie King,Senior Advisor,Compliance,2019-09-15,L5
+EMP_0029,Alexandra Le,IT Security Analyst,Risk Management,2020-10-19,L2
+EMP_0030,Nicole Mack,Fraud Investigator,Treasury,2017-11-22,L3
+EMP_0031,Jeffrey Chavez,Customer Service Rep,Audit,2023-02-11,L2
+EMP_0032,Michelle Stanton,Compliance Director,Wealth Management,2021-06-25,L1
+EMP_0033,Thomas Harrell,KYC Analyst,Retail Banking,2017-07-16,L3
+EMP_0034,Katie Gonzalez,Risk Analyst,Operations,2018-03-07,L1
+EMP_0035,Kimberly Osborne,KYC Analyst,Customer Service,2019-07-06,L3
+EMP_0036,Linda Burns,KYC Analyst,IT Security,2015-12-14,L4
+EMP_0037,Sherry Decker,Customer Service Rep,IT Security,2017-08-13,L2
+EMP_0038,David Bradley,Operations Specialist,Compliance,2015-09-02,L2
+EMP_0039,John Jones,IT Security Analyst,Audit,2021-06-21,L5
+EMP_0040,Beth Keller,Operations Specialist,Customer Service,2023-01-20,L4
+EMP_0041,Deborah Brennan,Customer Service Rep,Customer Service,2018-08-07,L4
+EMP_0042,Tanya Campos,Branch Manager,Risk Management,2020-11-13,L2
+EMP_0043,Eric Carney,Teller,IT Security,2020-07-12,L1
+EMP_0044,Steven Hayes,Treasury Analyst,Retail Banking,2017-02-09,L1
+EMP_0045,George Chapman,Compliance Officer,Compliance,2016-12-15,L4
+EMP_0046,Adrienne Zimmerman,Senior Advisor,Corporate Banking,2015-07-02,L4
+EMP_0047,Taylor Heath,Risk Analyst,Customer Service,2015-08-09,L4
+EMP_0048,Diana Washington,Teller,Operations,2019-08-03,L5
+EMP_0049,Timothy Duncan,Audit Associate,Retail Banking,2019-01-08,L1
+EMP_0050,John Russell,Compliance Director,Audit,2015-10-21,L3
+EMP_0051,Jeffrey Henderson,Treasury Analyst,Wealth Management,2018-12-21,L1
+EMP_0052,Amy Valdez,Operations Specialist,Treasury,2020-06-30,L2
+EMP_0053,James Morgan,Fraud Investigator,Retail Banking,2022-05-01,L3
+EMP_0054,Corey Herrera,Teller,Compliance,2016-03-11,L5
+EMP_0055,Donald Wright,Customer Service Rep,Corporate Banking,2022-11-08,L3
+EMP_0056,Robert Chase,Audit Associate,Audit,2015-11-01,L5
+EMP_0057,Zachary Huff,KYC Analyst,Compliance,2023-03-30,L3
+EMP_0058,Paul Young,Treasury Analyst,Compliance,2018-06-16,L5
+EMP_0059,Mr. James Brown,Treasury Analyst,Audit,2018-03-23,L1
+EMP_0060,James House,Senior Advisor,Wealth Management,2021-09-05,L4
+EMP_0061,Jay Bernard,Relationship Manager,Corporate Banking,2021-08-30,L3
+EMP_0062,Michelle Moore,Customer Service Rep,Operations,2017-07-10,L2
+EMP_0063,Anthony Fitzgerald,Relationship Manager,Risk Management,2015-07-09,L5
+EMP_0064,Amy Silva,Account Manager,Corporate Banking,2019-04-12,L4
+EMP_0065,Kim Brown,Audit Associate,Corporate Banking,2019-04-27,L5
+EMP_0066,Cody Larson,Treasury Analyst,Compliance,2020-09-28,L2
+EMP_0067,Jennifer David,Compliance Director,IT Security,2019-11-05,L5
+EMP_0068,Kristopher Harvey,Compliance Officer,Operations,2018-07-26,L5
+EMP_0069,Krystal Stewart,Audit Associate,Customer Service,2017-03-21,L4
+EMP_0070,Mike Allen,KYC Analyst,Audit,2018-05-14,L2
+EMP_0071,Matthew Bryant,IT Security Analyst,Operations,2022-11-26,L4
+EMP_0072,Angel Ellis,Compliance Director,Wealth Management,2019-10-16,L4
+EMP_0073,Angel Lewis MD,Customer Service Rep,Audit,2022-12-09,L4
+EMP_0074,Benjamin Sanchez,Account Manager,Risk Management,2017-06-04,L2
+EMP_0075,Roy Warner,Account Manager,Wealth Management,2020-03-15,L1
+EMP_0076,Dr. Kendra Contreras,Senior Advisor,Audit,2019-09-20,L2
+EMP_0077,Matthew Mcmillan,Senior Advisor,Risk Management,2016-02-22,L1
+EMP_0078,Steve Newton,Account Manager,Retail Banking,2016-04-27,L2
+EMP_0079,Larry Robbins,Account Manager,Retail Banking,2016-09-24,L3
+EMP_0080,Sarah Wagner,Account Manager,Audit,2017-02-19,L2
+EMP_0081,Sarah Davis,Operations Specialist,IT Security,2018-08-09,L2
+EMP_0082,Amanda Cook,Teller,Compliance,2016-02-11,L5
+EMP_0083,Deborah Figueroa,Senior Advisor,IT Security,2019-09-11,L2
+EMP_0084,Kristina Rodriguez,Treasury Analyst,IT Security,2023-01-15,L4
+EMP_0085,Stephanie Gardner,KYC Analyst,Corporate Banking,2022-02-05,L1
+EMP_0086,Juan Jordan,Compliance Director,Treasury,2015-05-10,L3
+EMP_0087,Steven Flynn,Risk Analyst,Treasury,2022-04-28,L4
+EMP_0088,Hunter Fleming,Audit Associate,Retail Banking,2020-09-03,L1
+EMP_0089,Richard Henson,Relationship Manager,Treasury,2018-06-16,L3
+EMP_0090,Nicole Frost,Treasury Analyst,Corporate Banking,2017-01-05,L2
+EMP_0091,Vanessa Cochran,KYC Analyst,Risk Management,2022-07-01,L5
+EMP_0092,Christopher Middleton,Fraud Investigator,Compliance,2021-08-27,L4
+EMP_0093,Rebekah Shields,Compliance Officer,Operations,2021-11-23,L4
+EMP_0094,Christopher Haynes,KYC Analyst,Corporate Banking,2018-04-03,L4
+EMP_0095,Shannon Walker,Treasury Analyst,Audit,2021-12-12,L1
+EMP_0096,Hannah Hoover,Relationship Manager,Audit,2022-05-31,L1
+EMP_0097,Alexander Lee,Account Manager,Risk Management,2017-10-16,L2
+EMP_0098,Benjamin Ayala,Risk Analyst,IT Security,2017-12-26,L4
+EMP_0099,Jennifer Zavala,KYC Analyst,Treasury,2019-07-24,L1
+EMP_0100,Alexander Wiley,Compliance Officer,Treasury,2017-03-22,L1
+EMP_0101,Victor Baker,Risk Analyst,Operations,2015-12-03,L4
+EMP_0102,Haley Hartman,Operations Specialist,Treasury,2018-09-17,L5
+EMP_0103,Kayla Cruz,Compliance Director,IT Security,2019-11-27,L2
+EMP_0104,Andrew Graham,KYC Analyst,Operations,2019-06-04,L2
+EMP_0105,Kimberly Ball,Relationship Manager,Customer Service,2021-04-24,L5
+EMP_0106,Christina Reynolds,Relationship Manager,Wealth Management,2023-01-27,L1
+EMP_0107,Erin Edwards,Relationship Manager,Customer Service,2022-03-19,L4
+EMP_0108,Steven Hunter,Teller,Audit,2020-09-02,L2
+EMP_0109,James Phillips,Relationship Manager,Audit,2016-01-31,L1
+EMP_0110,Maurice Gray,Audit Associate,Compliance,2021-05-13,L1
+EMP_0111,Lisa Turner,Senior Advisor,Corporate Banking,2019-08-30,L2
+EMP_0112,Elizabeth Clark,Risk Analyst,Corporate Banking,2021-09-07,L5
+EMP_0113,Mary Marshall,KYC Analyst,Customer Service,2018-10-05,L5
+EMP_0114,Kayla Leon,Relationship Manager,Customer Service,2023-03-02,L1
+EMP_0115,Carolyn Miller,Risk Analyst,Customer Service,2019-05-21,L5
+EMP_0116,Lisa Davis,Teller,Wealth Management,2023-02-05,L3
+EMP_0117,Megan Walker,KYC Analyst,Wealth Management,2016-09-10,L2
+EMP_0118,Angel Riggs,Operations Specialist,Treasury,2020-03-14,L2
+EMP_0119,Angel Perry,Compliance Director,Operations,2020-05-10,L4
+EMP_0120,Michelle Cruz,Branch Manager,Corporate Banking,2018-05-26,L1
+EMP_0121,Matthew Smith,Fraud Investigator,Customer Service,2021-05-22,L5
+EMP_0122,Stacey Osborne,Account Manager,Corporate Banking,2016-11-10,L5
+EMP_0123,Tyler Holmes,KYC Analyst,Audit,2015-06-06,L3
+EMP_0124,Sylvia Martinez,Compliance Officer,Wealth Management,2016-02-19,L1
+EMP_0125,Mary Travis,Customer Service Rep,Risk Management,2020-01-25,L3
+EMP_0126,Pedro Ramos,Operations Specialist,Compliance,2021-12-07,L4
+EMP_0127,Kathy Rivas,Audit Associate,Audit,2019-08-30,L3
+EMP_0128,Christopher Hensley,Senior Advisor,Audit,2018-10-30,L1
+EMP_0129,David Walsh,Compliance Director,Audit,2021-07-07,L3
+EMP_0130,Kari Allen,Customer Service Rep,Corporate Banking,2018-09-28,L2
+EMP_0131,Dustin Nelson,Operations Specialist,Corporate Banking,2017-09-20,L1
+EMP_0132,Angela Hernandez,IT Security Analyst,Audit,2018-04-05,L2
+EMP_0133,Michelle Brown,Operations Specialist,Operations,2018-06-20,L5
+EMP_0134,John Brown,KYC Analyst,Wealth Management,2022-01-31,L2
+EMP_0135,Taylor Silva,Compliance Director,Operations,2020-11-30,L5
+EMP_0136,Spencer Johnston,Fraud Investigator,Operations,2019-01-21,L1
+EMP_0137,Guy Molina,Account Manager,Treasury,2022-04-05,L3
+EMP_0138,Sara Medina,Relationship Manager,Retail Banking,2021-04-01,L3
+EMP_0139,Lindsey Walker,Treasury Analyst,Compliance,2016-11-12,L3
+EMP_0140,John Price,Compliance Officer,IT Security,2020-09-09,L5
+EMP_0141,Jennifer Martin,IT Security Analyst,Treasury,2018-12-23,L5
+EMP_0142,Veronica Ferguson,Relationship Manager,Corporate Banking,2022-09-18,L1
+EMP_0143,Justin Johnson,Customer Service Rep,Compliance,2020-06-19,L5
+EMP_0144,Sean White,Relationship Manager,Wealth Management,2017-03-19,L5
+EMP_0145,Daniel Murphy,Teller,Compliance,2021-06-23,L4
+EMP_0146,Diana Bean,Compliance Officer,Retail Banking,2018-08-02,L3
+EMP_0147,Bradley Smith,Branch Manager,Retail Banking,2019-08-03,L3
+EMP_0148,Trevor Walker,KYC Analyst,Risk Management,2015-08-02,L1
+EMP_0149,Marissa Webster,Branch Manager,Audit,2023-01-29,L4
+EMP_0150,Ryan Howell,Senior Advisor,Compliance,2017-01-11,L2
+EMP_0151,Michael Elliott,Audit Associate,Compliance,2016-11-08,L2
+EMP_0152,David Wood,Customer Service Rep,Treasury,2020-02-26,L1
+EMP_0153,Nicole Wilson,Compliance Officer,Wealth Management,2021-12-20,L4
+EMP_0154,Eric Lane,Treasury Analyst,Risk Management,2022-11-25,L3
+EMP_0155,Michael Rubio,Compliance Officer,Corporate Banking,2018-05-17,L4
+EMP_0156,Christina Vargas,Audit Associate,Retail Banking,2022-01-24,L4
+EMP_0157,Ashley Barton,KYC Analyst,Risk Management,2022-03-26,L4
+EMP_0158,Renee Hogan,Branch Manager,Operations,2019-10-25,L2
+EMP_0159,Hannah Patterson,KYC Analyst,Retail Banking,2018-02-25,L2
+EMP_0160,Matthew Smith,Risk Analyst,Wealth Management,2018-07-29,L3
+EMP_0161,Ashley Yu,Audit Associate,Corporate Banking,2020-05-28,L3
+EMP_0162,Julia Hernandez,Branch Manager,Audit,2016-07-01,L4
+EMP_0163,Tracie Nelson,Compliance Director,Audit,2021-11-15,L3
+EMP_0164,Patricia Marshall,Relationship Manager,Corporate Banking,2022-01-09,L3
+EMP_0165,Debra Christian,Compliance Officer,Customer Service,2022-01-24,L3
+EMP_0166,Diana Hayes,Relationship Manager,Corporate Banking,2021-05-20,L5
+EMP_0167,Leonard Gray,Risk Analyst,Wealth Management,2015-03-31,L3
+EMP_0168,Frederick Freeman MD,Risk Analyst,Customer Service,2017-03-13,L5
+EMP_0169,Spencer Haynes,Account Manager,Treasury,2017-05-08,L5
+EMP_0170,Kellie Lee,KYC Analyst,Operations,2017-01-19,L1
+EMP_0171,Katherine Chang,IT Security Analyst,Treasury,2020-11-15,L1
+EMP_0172,Michael West,Teller,Audit,2015-02-23,L2
+EMP_0173,Daniel Holt,Branch Manager,Treasury,2017-08-09,L1
+EMP_0174,Jackie Tran,Compliance Director,Wealth Management,2017-12-04,L5
+EMP_0175,Patrick Rivera,Branch Manager,Corporate Banking,2020-12-23,L3
+EMP_0176,Eric Hall,Teller,Operations,2021-02-18,L4
+EMP_0177,Bryan Herrera,Branch Manager,Treasury,2021-06-26,L3
+EMP_0178,Cheryl Rodgers,Teller,Compliance,2017-05-09,L2
+EMP_0179,Vanessa Warren,Risk Analyst,Treasury,2017-05-29,L2
+EMP_0180,Dr. Elizabeth Ward,Senior Advisor,Customer Service,2017-07-28,L3
+EMP_0181,Joseph Hill,Risk Analyst,Audit,2023-04-16,L1
+EMP_0182,Edgar Raymond,Operations Specialist,Operations,2020-06-04,L2
+EMP_0183,Katherine Salas,Risk Analyst,Customer Service,2019-11-19,L5
+EMP_0184,John Peterson,Compliance Director,Wealth Management,2023-03-19,L4
+EMP_0185,Todd Woods,Fraud Investigator,IT Security,2021-12-29,L2
+EMP_0186,John Ray,Teller,IT Security,2020-11-02,L2
+EMP_0187,Chase Hart,Compliance Director,Corporate Banking,2017-08-01,L3
+EMP_0188,David Grant,Teller,Customer Service,2018-07-17,L3
+EMP_0189,Rachel Perez,Account Manager,Risk Management,2019-06-12,L3
+EMP_0190,Terry Evans,KYC Analyst,Risk Management,2020-01-03,L2
+EMP_0191,Elizabeth Oliver DDS,Relationship Manager,Retail Banking,2021-04-18,L2
+EMP_0192,Phillip Garrett,Fraud Investigator,Customer Service,2017-04-02,L1
+EMP_0193,Brooke Thompson,Fraud Investigator,Treasury,2015-08-22,L5
+EMP_0194,Jason Norris,KYC Analyst,Treasury,2018-12-30,L4
+EMP_0195,David Mann,Risk Analyst,Risk Management,2020-12-24,L2
+EMP_0196,Andrea Hall,Compliance Director,Retail Banking,2017-04-01,L1
+EMP_0197,Lori Guerrero,Treasury Analyst,Treasury,2022-12-10,L2
+EMP_0198,Brian Walker,Compliance Officer,Audit,2016-04-07,L4
+EMP_0199,Samantha Jones,Relationship Manager,Audit,2016-05-30,L2
+EMP_0200,Linda Holloway,Customer Service Rep,Corporate Banking,2022-11-02,L4

@@ -1,0 +1,40 @@
+# ─── FIN04 .gitignore ─────────────────────────────────────────────────────────
+
+# AMLSim clone (large simulator repo — do not commit)
+/AMLSim/
+
+# IBM AML medium/large variants (too big for git)
+data/ibm_aml/HI-Medium_Trans.csv
+data/ibm_aml/HI-Large_Trans.csv
+data/ibm_aml/LI-Medium_Trans.csv
+data/ibm_aml/LI-Large_Trans.csv
+data/ibm_aml/HI-Medium_*.csv
+data/ibm_aml/HI-Large_*.csv
+data/ibm_aml/LI-Medium_*.csv
+data/ibm_aml/LI-Large_*.csv
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Virtual environments
+venv/
+.env/
+env/
