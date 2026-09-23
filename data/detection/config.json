@@ -1,0 +1,35 @@
+{
+  "rules": {
+    "INSIDER.PRIVILEGE_CHANGE": {
+      "enabled": true,
+      "qualifying_administrative_categories": [
+        "access",
+        "limit",
+        "auth",
+        "fraud",
+        "monitoring",
+        "kyc",
+        "risk",
+        "payee",
+        "beneficial",
+        "account",
+        "view_only",
+        "api",
+        "batch",
+        "wire",
+        "forex",
+        "screen"
+      ],
+      "qualifying_profile_change_fields": [
+        "spending_limit",
+        "wire_transfer_limit",
+        "risk_rating",
+        "beneficial_owner",
+        "account_type"
+      ],
+      "matching_timestamp": "exact",
+      "require_matching_employee": true,
+      "minimum_qualifying_events": 1
+    }
+  }
+}
