@@ -159,25 +159,25 @@ Instead of parsing foreign keys across raw transaction CSVs, use these pre-compu
 
 Pre-constructed graph representation ready for NetworkX, PyTorch Geometric, or graph databases (Neo4j / Memgraph). Zero dangling edges (all source and target IDs exist in `nodes.csv`).
 
-#### Node Types (`data/graph/nodes.csv` — 25,145 nodes)
+#### Node Types (`data/graph/nodes.csv` — 25,467 nodes)
 
 | Node Type | Total Count | ID Format | Label Format |
 |-----------|------------:|-----------|--------------|
-| **`Transaction`** | **19,858** | `SYN_S01_001` / `TXN_0000109` | `[SYNTHETIC/REAL] {id}: {amount} {curr} via {format}` |
-| **`Account`** | **4,148** | `800056370` | `Account {id} (Bank {bank_id})` or `(External Counterparty)` |
+| **`Transaction`** | **20,162** | `SYN_S01_001` / `TXN_0000109` | `[SYNTHETIC/REAL] {id}: {amount} {curr} via {format}` |
+| **`Account`** | **4,166** | `800056370` | `Account {id} (Bank {bank_id})` or `(External Counterparty)` |
 | **`Customer`** | **939** | `800056370` | `{Name} ({Country}, Risk: {Risk})` |
 | **`Employee`** | **200** | `EMP_0001` | `{Name} ({Role}, {Department})` |
 
-#### Edge Types (`data/graph/edges.csv` — 62,309 edges)
+#### Edge Types (`data/graph/edges.csv` — 63,225 edges)
 
 | Edge Type | Source → Target | Count | Timestamp | Metadata Attributes |
 |-----------|-----------------|------:|-----------|---------------------|
 | **`OWNS`** | Customer → Account | 939 | No | `{"relationship": "owner"}` |
-| **`MANAGES`** | Employee → Customer | 439 | No | `{"relationship_type": "account_manager" \| "approver" ...}` |
-| **`CHANGED_ACCESS`** | Employee → Account | 839 | Yes | `{"event_id", "action", "old_value", "new_value"}` |
+| **`MANAGES`** | Employee → Customer | 441 | No | `{"relationship_type": "account_manager" \| "approver" ...}` |
+| **`CHANGED_ACCESS`** | Employee → Account | 841 | Yes | `{"event_id", "action", "old_value", "new_value"}` |
 | **`EDITED_PROFILE`** | Employee → Customer | 518 | Yes | `{"change_id", "field_changed", "old_value", "new_value"}` |
-| **`SENT_TO`** | Account → Account | 19,858 | Yes | `{"transaction_id", "amount", "currency", "format", "is_laundering", "is_synthetic"}` |
-| **`INVOLVED_IN`** | Account → Transaction | 39,716 | Yes | `{"role": "sender" \| "receiver" \| "self", "amount": float}` |
+| **`SENT_TO`** | Account → Account | 20,162 | Yes | `{"transaction_id", "amount", "currency", "format", "is_laundering", "is_synthetic"}` |
+| **`INVOLVED_IN`** | Account → Transaction | 40,324 | Yes | `{"role": "sender" \| "receiver" \| "self", "amount": float}` |
 
 ---
 
@@ -249,3 +249,5 @@ Column **`expected_signals`** in `data/synthetic_hr/labeled_scenarios.csv` defin
    Co-occurring records in `access_events.csv` (core IT log) and `profile_changes.csv` (CRM audit trail) sharing the same timestamp represent two logging views of the **same underlying administrative action**. Detection rules must collapse these into **one single `privilege_change` signal**, not two independent corroborations.
 3. **Background Real Laundering Caveat (`background_real_laundering_count`)**:
    In `accounts.csv`, `background_real_laundering_count` tallies pre-existing real IBM AML laundering transactions (`is_laundering=1`) that exist independently of our scenarios. Exactly 6 scenario accounts have background laundering noise (e.g. `L01` has 2 background real laundering transactions). When computing scenario detection metrics (Recall, Precision, FPR), **only transactions in `related_transaction_ids` define scenario ground truth**. Background real laundering rows must not be counted against the scenario outcome.
+4. **AMLSim Dataset Scope & Independence**:
+   `data/amlsim/` (the generated `accounts.csv`, `transactions.csv`, `alert_patterns.csv`, `alert_members.csv`) is an independent benchmark for validating detection rule recall (e.g. does the cycle-detection rule correctly find AMLSim's labeled cycle/fan-out/fan-in patterns?). It is NOT part of the unified investigation graph and should not be merged with `data/graph/nodes.csv` or `edges.csv`.
