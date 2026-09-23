@@ -838,3 +838,5 @@ EVT_000486,EMP_0144,grant,812E3ACB0,,admin,2022-09-17 21:02:02,,
 EVT_000144,EMP_0010,grant,8064DEEE0,,wire_transfer,2022-09-17 22:20:18,,
 EVT_000297,EMP_0183,revoke,8093A7560,batch_payment,,2022-09-17 22:52:59,,
 EVT_000284,EMP_0091,grant,80CC66860,,admin,2022-09-17 23:14:43,,
+EVT_090040,EMP_0047,modify,800085BF0,wire_transfer_disabled,wire_transfer_enabled,2022-09-14 08:30:00,suspicious,S19
+EVT_090041,EMP_0048,modify,80026A5A0,review_pending,review_completed,2022-09-09 08:15:00,legitimate,L19

@@ -125,8 +125,127 @@ python data/amlsim/generate_amlsim.py
 # Step 3: Synthetic HR generation (requires transactions_clean.csv)
 python data/synthetic_hr/generate.py
 
-# Step 4: Validate all joins
+# Step 4: Canonical Entity Generation (accounts.csv, customers.csv)
+python data/entities/build_entities.py
+
+# Step 5: Graph Generation (nodes.csv, edges.csv)
+python data/graph/build_graph.py
+
+# Step 6: Validate all joins & scenarios
 python data/validate_joins.py
 ```
 
 All generators use fixed random seeds for full reproducibility.
+
+---
+
+## Graph Schema for Detection & Backend Teams
+
+This section is the single source of truth for **Member 2 (Detection / ML / Rule Engines)** and **Member 3 (Backend / Graph / Evidence API)**. It documents the pre-joined entity tables, graph structures, fast investigation API, and detection ground truth.
+
+### 1. Canonical Entity Master Records (`data/entities/`)
+
+Instead of parsing foreign keys across raw transaction CSVs, use these pre-computed canonical entity master tables:
+
+- **`data/entities/accounts.csv`** (1,884 rows): Master account table scoped to accounts participating in the HR layer, scenarios, or customer portfolios.
+  - Columns: `account_id`, `linked_customer_id`, `bank_id`, `first_seen_timestamp`, `last_seen_timestamp`, `real_txn_count`, `synthetic_txn_count`, `total_transaction_count`, `background_real_laundering_count`.
+- **`data/entities/customers.csv`** (939 rows): Master customer table scoped to customers in HR relationship maps and profile audit trails.
+  - Columns: `customer_id`, `name`, `country`, `account_ids`, `risk_rating`.
+- Full schema documentation: [data/entities/SCHEMA.md](file:///c:/Users/HP/OneDrive/المستندات/Projects/HackMatrix/data/entities/SCHEMA.md).
+
+---
+
+### 2. Graph Ready Schema (`data/graph/`)
+
+Pre-constructed graph representation ready for NetworkX, PyTorch Geometric, or graph databases (Neo4j / Memgraph). Zero dangling edges (all source and target IDs exist in `nodes.csv`).
+
+#### Node Types (`data/graph/nodes.csv` — 25,145 nodes)
+
+| Node Type | Total Count | ID Format | Label Format |
+|-----------|------------:|-----------|--------------|
+| **`Transaction`** | **19,858** | `SYN_S01_001` / `TXN_0000109` | `[SYNTHETIC/REAL] {id}: {amount} {curr} via {format}` |
+| **`Account`** | **4,148** | `800056370` | `Account {id} (Bank {bank_id})` or `(External Counterparty)` |
+| **`Customer`** | **939** | `800056370` | `{Name} ({Country}, Risk: {Risk})` |
+| **`Employee`** | **200** | `EMP_0001` | `{Name} ({Role}, {Department})` |
+
+#### Edge Types (`data/graph/edges.csv` — 62,309 edges)
+
+| Edge Type | Source → Target | Count | Timestamp | Metadata Attributes |
+|-----------|-----------------|------:|-----------|---------------------|
+| **`OWNS`** | Customer → Account | 939 | No | `{"relationship": "owner"}` |
+| **`MANAGES`** | Employee → Customer | 439 | No | `{"relationship_type": "account_manager" \| "approver" ...}` |
+| **`CHANGED_ACCESS`** | Employee → Account | 839 | Yes | `{"event_id", "action", "old_value", "new_value"}` |
+| **`EDITED_PROFILE`** | Employee → Customer | 518 | Yes | `{"change_id", "field_changed", "old_value", "new_value"}` |
+| **`SENT_TO`** | Account → Account | 19,858 | Yes | `{"transaction_id", "amount", "currency", "format", "is_laundering", "is_synthetic"}` |
+| **`INVOLVED_IN`** | Account → Transaction | 39,716 | Yes | `{"role": "sender" \| "receiver" \| "self", "amount": float}` |
+
+---
+
+### 3. Investigation Query Utility (`data/graph/get_account_history.py`)
+
+Backend and detection services can query the unified history of any account in sub-second time without scanning 5M transaction rows:
+
+```python
+from data.graph.get_account_history import get_account_history
+
+history = get_account_history("800056370")
+```
+
+#### Function Signature & Return Structure:
+
+```python
+def get_account_history(account_id: str) -> dict:
+    """
+    Returns a unified investigation dictionary:
+    {
+        "account_id": "800056370",
+        "account": { ... },         # Row dict from accounts.csv
+        "customer": { ... },        # Row dict from customers.csv (or None)
+        "employees": [ ... ],       # List of linked employees with relationship_type
+        "access_events": [ ... ],   # Chronologically sorted access events targeting this account
+        "profile_changes": [ ... ], # Chronologically sorted customer profile modifications
+        "transactions": [ ... ],    # Chronologically sorted transactions (real & injected)
+                                    # with 'account_role': 'sender' | 'receiver' | 'self'
+                                    # and 'is_synthetic': True | False
+        "summary": {
+            "total_transactions": 144,
+            "real_transactions": 132,
+            "synthetic_transactions": 12,
+            "role_counts": {"sender": 118, "receiver": 1, "self": 25}
+        }
+    }
+    """
+```
+
+---
+
+### 4. Expected Detection Signals Vocabulary (`labeled_scenarios.csv`)
+
+Column **`expected_signals`** in `data/synthetic_hr/labeled_scenarios.csv` defines the ground truth benchmark for Member 2's detection engine. Every scenario is annotated with a comma-separated list of signals drawn strictly from this 8-signal vocabulary:
+
+| Signal Token | Definition | Example Trigger Condition |
+|--------------|------------|---------------------------|
+| **`privilege_change`** | Administrative limit increase, permission grant, KYC override, risk rating change, dual-auth disablement, API access, or dormant activation. | Transfer limit elevated from $10K to $100K |
+| **`transaction_splitting`** | Structuring or smurfing: repeated transactions just below legal reporting thresholds ($10,000). | Multiple $9,500 or $9,800 wire/cash transfers |
+| **`circular_transfer`** | Closed-loop circular fund flows returning to the originator (e.g. A → B → C → A). | Round-trip ring flow back to originator |
+| **`velocity_anomaly`** | Rapid burst of transactions uncharacteristic of baseline account activity. | 20+ transfers in 24 hours, or 100+ bot transfers/hour |
+| **`profile_mismatch`** | Change in address, offshore PO Box, beneficial ownership to shell company, or personal-to-business switch. | Residential address swapped for offshore PO Box |
+| **`high_value_transfer`** | Exceptionally large transaction amount relative to history or account tier ($200K – $2.5M+). | $450K wire or $2.5M corporate transfer |
+| **`new_counterparty`** | First-time payee/beneficiary, newly added offshore entity, or multiple unseen destinations. | Unverified offshore payee receiving funds within 2h |
+| **`cross_border`** | Funds transferred across international borders, to offshore/sanctioned jurisdictions, or rapid multi-currency forex conversions. | Wire to offshore haven or USD→EUR→CHF conversions |
+
+> ⚠️ **Note on `circular_transfer` vs. Linear Layering Chains**:
+> `circular_transfer` strictly designates closed-loop cycles where funds return to the originating account ($A \rightarrow B \rightarrow C \rightarrow A$, ground truth demonstrated in scenario `S19`). Scenarios involving multi-hop transfers to distinct shell accounts or intermediate payees (such as `S05`, `S12`, `S16`, `L03`, and `L19`) are **linear fan-out / layering chains** ($A \rightarrow B, A \rightarrow C, A \rightarrow D$) rather than closed circular graphs. They are tagged with `velocity_anomaly`, `high_value_transfer`, or `profile_mismatch` rather than `circular_transfer`.
+
+> 💡 **False-Positive Suppression Testing**: Legitimate scenarios (`L01`–`L19`) also specify the signals that naive rule engines superficially trigger on (e.g. `L01` payroll bonus split triggers `transaction_splitting`; `L19` liquidity sweep tests non-cycle multi-hop transfers). This allows Member 2 to measure false-positive suppression via context/documentation enrichment.
+
+---
+
+### 5. Essential Modeling Rules & Constraints for Downstream Teams
+
+1. **1:1 Customer-to-Account Mapping**:
+   Each `customer_id` is identical to its primary `account_id` (a strict 1:1 relationship). IBM AML data has no independent customer table. Do not model 1-to-many customer-account hierarchies.
+2. **Dual-Audit-Log Collapsing Rule**:
+   Co-occurring records in `access_events.csv` (core IT log) and `profile_changes.csv` (CRM audit trail) sharing the same timestamp represent two logging views of the **same underlying administrative action**. Detection rules must collapse these into **one single `privilege_change` signal**, not two independent corroborations.
+3. **Background Real Laundering Caveat (`background_real_laundering_count`)**:
+   In `accounts.csv`, `background_real_laundering_count` tallies pre-existing real IBM AML laundering transactions (`is_laundering=1`) that exist independently of our scenarios. Exactly 6 scenario accounts have background laundering noise (e.g. `L01` has 2 background real laundering transactions). When computing scenario detection metrics (Recall, Precision, FPR), **only transactions in `related_transaction_ids` define scenario ground truth**. Background real laundering rows must not be counted against the scenario outcome.

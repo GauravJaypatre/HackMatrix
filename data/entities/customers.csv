@@ -1,0 +1,940 @@
+customer_id,name,country,account_ids,risk_rating
+800056370,Allison Hill,Czech Republic,800056370,Low
+800056660,Brian Yang,Mayotte,800056660,Low
+800056A50,Javier Johnson,Cuba,800056A50,Low
+800056CB0,Lance Hoffman,Saint Barthelemy,800056CB0,Low
+800056E00,Kimberly Robinson,Namibia,800056E00,Low
+800057020,Sean Blake,Cayman Islands,800057020,Low
+8000573C0,Gina Moore,Serbia,8000573C0,Medium
+800057620,Brandon Davis,Tanzania,800057620,Low
+800057A10,Dennis Williams,Kuwait,800057A10,Low
+800057D40,Valerie Gray,Micronesia,800057D40,Low
+800057D41,Mark Mcclure,Guyana,800057D41,Low
+800058100,Michele Williams,Denmark,800058100,Low
+800058470,Victoria Wyatt,Tonga,800058470,Low
+8000588D0,Donald Reid,Haiti,8000588D0,Low
+800058920,Henry Santiago,Reunion,800058920,Low
+800058B80,Maria Lynch,Chile,800058B80,Low
+800058F40,Danielle Ford,Faroe Islands,800058F40,Low
+800059230,Margaret Hawkins DDS,Tajikistan,800059230,Low
+800059440,Amy Underwood,Sri Lanka,800059440,Medium
+800059840,Derek Clark,Western Sahara,800059840,Low
+800059C00,Michelle Lewis,Luxembourg,800059C00,Medium
+800059F50,Thomas Ellis,Estonia,800059F50,Low
+80005A2A0,Patrick Ryan,San Marino,80005A2A0,Low
+80005A6B0,Stephanie Ross,Cyprus,80005A6B0,Low
+80005AB30,Brenda Snyder PhD,Tokelau,80005AB30,High
+80005AD90,Mark Conner,Jamaica,80005AD90,Low
+80005ADE0,Janice Carlson,Lao People's Democratic Republic,80005ADE0,Low
+80005B110,Tricia Valencia,Algeria,80005B110,Low
+80005B3E0,Ashley Dyer,Sao Tome and Principe,80005B3E0,Medium
+80005B5F0,Martin Rodriguez,Jordan,80005B5F0,Low
+80005B9B0,Aaron Bowen,Saint Helena,80005B9B0,Medium
+80005BD00,Jonathan White,United States Minor Outlying Islands,80005BD00,Low
+80005C050,Mario Skinner,Madagascar,80005C050,Low
+80005C0A0,Brittany Farmer,Mauritius,80005C0A0,High
+80005C0A1,Tammy Sellers,Netherlands Antilles,80005C0A1,Low
+80005C3D0,Alec Hickman,Turkey,80005C3D0,Low
+80005C790,Dr. Cynthia Allen,Montenegro,80005C790,Medium
+80005CB50,Angelica Tucker,Bangladesh,80005CB50,Low
+80005CF10,Kim Martinez,Palestinian Territory,80005CF10,Medium
+800085BF0,Joshua Baker,Tunisia,800085BF0,Low
+800091C60,Tracey Hickman,Saudi Arabia,800091C60,Low
+800093C80,Christina Collins,Paraguay,800093C80,Low
+80010C060,Jessica Holmes,British Indian Ocean Territory (Chagos Archipelago),80010C060,Low
+8001C3570,Austin Smith,Micronesia,8001C3570,Low
+80021DC50,Daniel Jones,Norfolk Island,80021DC50,Low
+80026A5A0,Austin Johnson,Greenland,80026A5A0,Low
+8002807E0,David Caldwell,Croatia,8002807E0,Low
+8002C56D0,Miranda Khan,Morocco,8002C56D0,Low
+8003C24D0,Richard Aguirre,Comoros,8003C24D0,Low
+8003F7BD0,Matthew Gomez,Isle of Man,8003F7BD0,Low
+800425630,Nicholas Nunez,Oman,800425630,Low
+8004473E0,James Morgan,Tokelau,8004473E0,Low
+800456880,Corey Herrera,Burundi,800456880,Low
+800489210,Donald Wright,Uzbekistan,800489210,Medium
+8004B6050,Robert Chase,Bolivia,8004B6050,Low
+8004FE3E0,Zachary Huff,Bermuda,8004FE3E0,Low
+80053CFC0,Sarah Martin,Libyan Arab Jamahiriya,80053CFC0,Low
+80063DE20,Dr. Steven Martin,Afghanistan,80063DE20,Low
+800793180,Mrs. Rachel Gibson,Jamaica,800793180,Low
+80084B380,Monica Logan,Panama,80084B380,Low
+800925110,Brittney Phillips,Azerbaijan,800925110,High
+8009A4370,Kimberly Adkins,Azerbaijan,8009A4370,Low
+8009B45E0,John Calhoun,Marshall Islands,8009B45E0,Low
+800A52F40,Tyler Miller,Colombia,800A52F40,Low
+800AA9E00,Barry Hensley,Iraq,800AA9E00,Medium
+800B3A9C0,Steve Sanchez,Nepal,800B3A9C0,Medium
+800B620B0,Bradley Sandoval,Mongolia,800B620B0,Low
+800B95320,Taylor Harris,Saint Barthelemy,800B95320,Low
+800BBD220,Derek Anderson,Oman,800BBD220,Low
+800BED3C0,Eugene Walton,Barbados,800BED3C0,Low
+800C45CA0,Marc Hart,Bolivia,800C45CA0,Low
+800C5E3F0,Daniel Baker,Venezuela,800C5E3F0,Medium
+800D11090,Benjamin Sanchez,Finland,800D11090,Medium
+800D36B20,Roy Warner,New Zealand,800D36B20,Low
+800D43A90,Dr. Kendra Contreras,Micronesia,800D43A90,Low
+800D46C20,Matthew Mcmillan,Burkina Faso,800D46C20,Low
+800D6DD70,Steve Newton,Cape Verde,800D6DD70,Medium
+800D83A40,Larry Robbins,Costa Rica,800D83A40,Low
+800DDED10,Sarah Wagner,El Salvador,800DDED10,Low
+800E4DA90,Sarah Davis,Jamaica,800E4DA90,Low
+800E84250,Amanda Cook,Bulgaria,800E84250,Low
+800EE2180,Deborah Figueroa,Micronesia,800EE2180,Low
+800F1DB80,Kristina Rodriguez,Western Sahara,800F1DB80,Low
+800F30520,Stephanie Gardner,Syrian Arab Republic,800F30520,Medium
+80104C6F0,Juan Jordan,Armenia,80104C6F0,Low
+8010BB6E0,Steven Flynn,Tokelau,8010BB6E0,Low
+8011D2BD0,Hunter Fleming,Papua New Guinea,8011D2BD0,High
+8011F1250,Richard Henson,Ireland,8011F1250,Low
+8011F9E60,Nicole Frost,Dominica,8011F9E60,Low
+8012010B0,Vanessa Cochran,Turkmenistan,8012010B0,Low
+80120A710,Christopher Middleton,Slovenia,80120A710,Low
+80124DA90,Rebekah Shields,Sudan,80124DA90,Low
+801294D10,Christopher Haynes,Hong Kong,801294D10,Medium
+8013E5FB0,Shannon Walker,Svalbard & Jan Mayen Islands,8013E5FB0,Low
+801461050,Hannah Hoover,Tunisia,801461050,Low
+8014D45A0,Alexander Lee,Greenland,8014D45A0,Low
+8014FC550,Benjamin Ayala,Guernsey,8014FC550,High
+8015216E0,Jennifer Zavala,Mauritania,8015216E0,Low
+801535A60,Alexander Wiley,Eritrea,801535A60,High
+8015E88E0,Victor Baker,Botswana,8015E88E0,Medium
+80167DDD0,Haley Hartman,Jordan,80167DDD0,Low
+8016D8110,Kayla Cruz,Morocco,8016D8110,Low
+801772420,Andrew Graham,Mali,801772420,Low
+80177CEB0,Kimberly Ball,Saint Vincent and the Grenadines,80177CEB0,Low
+80179F360,Christina Reynolds,Yemen,80179F360,Low
+8017BE720,Erin Edwards,Thailand,8017BE720,Low
+8017C71A0,Steven Hunter,Papua New Guinea,8017C71A0,Low
+8018204F0,James Phillips,Brunei Darussalam,8018204F0,Low
+8018238B0,Maurice Gray,San Marino,8018238B0,Low
+8018CD260,Lisa Turner,Mexico,8018CD260,High
+80192FEF0,Elizabeth Clark,Solomon Islands,80192FEF0,Medium
+8019739C0,Mary Marshall,Kenya,8019739C0,Low
+801986330,Kayla Leon,South Africa,801986330,Low
+8019D53B0,Mary Campbell,Panama,8019D53B0,Low
+8019FFC80,Frances Cardenas,Sao Tome and Principe,8019FFC80,Medium
+801A19640,Eric Drake,Cameroon,801A19640,Medium
+801B565E0,David Alvarez,Thailand,801B565E0,Low
+801B850B0,Joy Mercado,Morocco,801B850B0,Low
+801BEED90,Michael Snyder,Ecuador,801BEED90,Low
+801C04D80,Michael Stafford,Tokelau,801C04D80,Low
+801C0FB60,Ashley Coleman,Christmas Island,801C0FB60,Medium
+801C98AE0,Melissa Marshall,Moldova,801C98AE0,Low
+801CBAF20,Ryan Bryant,Spain,801CBAF20,Medium
+801D03210,Joseph Hansen,Ghana,801D03210,Low
+801DD5140,Stephanie Salazar,Saint Helena,801DD5140,Low
+801DFB5B0,Jessica Meadows,Kiribati,801DFB5B0,Low
+801E6A920,Natasha Wells,Eritrea,801E6A920,Low
+801EC0260,Sara Ramirez,Slovakia (Slovak Republic),801EC0260,Medium
+801ED4980,Lori Hill,Belarus,801ED4980,Medium
+801F2E1A0,Cynthia Rogers,Uganda,801F2E1A0,Medium
+801F69530,Brenda Hall,Puerto Rico,801F69530,Low
+802119C10,Daniel Perry,Greenland,802119C10,Low
+802184880,Jennifer Clark,Italy,802184880,Medium
+8021FFD30,Randy Shah,Angola,8021FFD30,Medium
+802213DF0,Pamela James,Albania,802213DF0,Low
+802222410,Elizabeth Price,Uganda,802222410,Low
+80224CAA0,Jennifer Adkins,Mayotte,80224CAA0,Low
+80226A860,Stephanie Freeman,Faroe Islands,80226A860,Medium
+80226C4C0,Allen Rogers,Philippines,80226C4C0,Medium
+8023ED8B0,Misty Pittman,Uruguay,8023ED8B0,Low
+80247BB70,Marcus Johnson,India,80247BB70,Low
+802486E50,Mary Miller,Japan,802486E50,Low
+8025239F0,Joel Williams,Hong Kong,8025239F0,Low
+80252EF80,Jesse Rogers,Turkmenistan,80252EF80,Medium
+80254A380,Paul Decker,El Salvador,80254A380,Low
+802569B30,Julie Curry,Austria,802569B30,Low
+8025AFB80,Mrs. Marie Harrington DDS,Saudi Arabia,8025AFB80,Low
+8025BE730,David Combs,Nigeria,8025BE730,Low
+8025F9120,Cameron Caldwell,Mongolia,8025F9120,Low
+80265BCB0,Julie Scott,Heard Island and McDonald Islands,80265BCB0,Low
+8026B3760,Lawrence Adkins,Brazil,8026B3760,High
+8026ED8D0,Carla Collins,Mozambique,8026ED8D0,Low
+80271DB90,Eric Byrd,Honduras,80271DB90,Low
+8027F18F0,Miguel Jones,Portugal,8027F18F0,Low
+802959F80,Dana Terry,Gabon,802959F80,Low
+802980380,Lindsay Martinez,Mongolia,802980380,Low
+802B23240,Hannah Patterson,Heard Island and McDonald Islands,802B23240,Low
+802B59400,Matthew Smith,Italy,802B59400,Low
+802B8DF60,Ashley Yu,North Macedonia,802B8DF60,Low
+802BCFE40,Julia Hernandez,Christmas Island,802BCFE40,Low
+802C439B0,Tracie Nelson,Sri Lanka,802C439B0,Low
+802C54340,Patricia Marshall,Sweden,802C54340,Low
+802C69C80,Debra Christian,Switzerland,802C69C80,Low
+802C8CF10,Diana Hayes,Sao Tome and Principe,802C8CF10,Medium
+802D1E340,Leonard Gray,Antarctica (the territory South of 60 deg S),802D1E340,Medium
+802D21160,Frederick Freeman MD,Eritrea,802D21160,Low
+802D76360,Spencer Haynes,Falkland Islands (Malvinas),802D76360,Low
+802DC94C0,Kellie Lee,Dominican Republic,802DC94C0,Low
+802EFA860,Katherine Chang,Portugal,802EFA860,Low
+802FA7310,Michael West,Andorra,802FA7310,Low
+802FAD250,Daniel Holt,Gambia,802FAD250,Medium
+803009080,Jackie Tran,Guatemala,803009080,Low
+803042E00,Patrick Rivera,Reunion,803042E00,Low
+803145180,Eric Hall,Saint Helena,803145180,Medium
+80315FCD0,Bryan Herrera,Serbia,80315FCD0,Medium
+803165370,Cheryl Rodgers,Falkland Islands (Malvinas),803165370,Low
+8031B7E50,Vanessa Warren,Finland,8031B7E50,Low
+803209820,Dr. Elizabeth Ward,Gabon,803209820,Low
+80323AB50,Joseph Hill,Austria,80323AB50,Low
+803247FE0,Melissa Martinez,Trinidad and Tobago,803247FE0,Low
+8032FD420,Ashley Smith,Finland,8032FD420,Low
+80330E030,Jeremiah Lopez,Austria,80330E030,Low
+80338A4A0,Scott Wilson,Bahrain,80338A4A0,High
+80339F5C0,Benjamin Soto,Austria,80339F5C0,Low
+80339FB50,Robert Avery,Belize,80339FB50,Low
+803421B00,Bailey Duran DDS,Somalia,803421B00,Low
+80345B9D0,Patricia James,United States of America,80345B9D0,Medium
+80347F740,Scott Branch,Gambia,80347F740,Low
+8034B3590,Amy Choi,Bolivia,8034B3590,Low
+80352A280,Christine Clark,Panama,80352A280,Low
+80353C7D0,David Arnold,Cayman Islands,80353C7D0,Low
+803591B90,Jerry Wheeler,French Guiana,803591B90,Low
+80359D740,Dwayne Campbell,Tokelau,80359D740,Low
+80359FC90,Michael Bradshaw,Solomon Islands,80359FC90,Medium
+8035A9A50,Leah Lara,Congo,8035A9A50,Low
+80371B600,Joshua Holland,United States of America,80371B600,Medium
+80373DB80,Charles Brown,Somalia,80373DB80,Low
+803767D50,Paul Carroll,France,803767D50,Low
+80376F850,John Torres,Iraq,80376F850,High
+803771ED0,Kathryn Snyder,Belgium,803771ED0,Medium
+803782210,Stacy Navarro,Netherlands,803782210,High
+803864B70,Brandon Hayden,Taiwan,803864B70,Medium
+80387B870,Laurie Smith,Serbia,80387B870,Medium
+803946150,Debra Williams,Saudi Arabia,803946150,Low
+80396EF00,Joseph Ramos,Fiji,80396EF00,Low
+8039D99E0,Kevin Walters,Liechtenstein,8039D99E0,Low
+8039FEDD0,Julie Ortiz,Gibraltar,8039FEDD0,Low
+803A43310,Shannon Rivera,Puerto Rico,803A43310,Low
+803A663B0,Matthew Morales DDS,Argentina,803A663B0,Low
+803A7F390,Ernest Morris,Sierra Leone,803A7F390,High
+803AC4350,Jose Travis,Palestinian Territory,803AC4350,Low
+803AFBCD0,Julia Brown,Maldives,803AFBCD0,Medium
+803B8C4E0,Peter Garrett,Senegal,803B8C4E0,Low
+803B965F0,Derek Anderson,France,803B965F0,Low
+803C84C10,Michael Martinez,Norfolk Island,803C84C10,High
+803CABBA0,Cynthia Moore,Micronesia,803CABBA0,High
+803CDAE00,Jason Walker,Tajikistan,803CDAE00,Low
+803CE0561,Julia Wilson,Syrian Arab Republic,803CE0561,Low
+803CEB180,Timothy Carter,Romania,803CEB180,Low
+803D1C990,Ruben Baird,Ecuador,803D1C990,Low
+803D23610,Charles Lee,Netherlands Antilles,803D23610,High
+803D69350,Sherry Shields,Falkland Islands (Malvinas),803D69350,Low
+803E2FA50,Sarah Morgan,Solomon Islands,803E2FA50,Low
+803E419B0,Samantha Campbell,French Southern Territories,803E419B0,Low
+803ECA7F0,Lauren Keller,Tonga,803ECA7F0,Low
+803ED0780,Joshua Reed,Micronesia,803ED0780,Low
+803F30090,Jamie Cantu,Trinidad and Tobago,803F30090,Low
+804025CB0,Michael Armstrong,Djibouti,804025CB0,Medium
+804033B80,Jennifer Flores,Lebanon,804033B80,Low
+80403FE40,Roberta Hughes,Panama,80403FE40,High
+8040D99A0,Marissa Hernandez,Argentina,8040D99A0,Low
+8041C1790,Vincent Rivera,Bolivia,8041C1790,Low
+8042127F0,Jessica Fox,Korea,8042127F0,Low
+80426EF50,Charles Pitts,Cape Verde,80426EF50,Low
+8042CDCE0,Richard Baker,Nigeria,8042CDCE0,Low
+80432B8A0,Marie Christian,Timor-Leste,80432B8A0,Low
+8043B1D00,Kimberly Finley,Niue,8043B1D00,Medium
+804405680,Olivia Brennan,Argentina,804405680,Low
+80440B4D0,Cynthia Cohen,France,80440B4D0,Low
+804438E30,Nicole Hamilton MD,North Macedonia,804438E30,Low
+80451BD80,Ashlee Jackson,French Southern Territories,80451BD80,Low
+80455FA80,Amber Flynn,French Polynesia,80455FA80,Low
+8045722E0,Jeffrey Sanchez,Isle of Man,8045722E0,Low
+8045AFF90,Rebecca Jackson,Belgium,8045AFF90,Medium
+80460D080,Janet Vega,Luxembourg,80460D080,Low
+8046FC600,Briana Murray,Equatorial Guinea,8046FC600,Low
+804752C40,Michael Nolan,Lao People's Democratic Republic,804752C40,Low
+804790520,Megan Moore,Kenya,804790520,Low
+80489D1B0,Victoria Evans,Jamaica,80489D1B0,Low
+8049060A0,Joyce Turner,Hungary,8049060A0,Low
+80493D3F0,Ashley James,Guinea-Bissau,80493D3F0,Low
+8049926C0,Wendy Phillips,Switzerland,8049926C0,Medium
+8049AF0E1,Denise Knight,Poland,8049AF0E1,Low
+804A36990,Valerie Lozano,Samoa,804A36990,Low
+804AB3D60,Tanner Mitchell DDS,New Caledonia,804AB3D60,High
+804AD1260,Colleen Lee,El Salvador,804AD1260,High
+804B5A690,Michelle Hopkins,Taiwan,804B5A690,Low
+804B79470,Brent Burton,Armenia,804B79470,Low
+804C3BDE0,Jeremiah Riley,Saint Martin,804C3BDE0,Low
+804CBC400,Theodore Murphy,Israel,804CBC400,Medium
+804DE7670,Carlos Ryan,Haiti,804DE7670,Medium
+804E0D2F0,Susan Rivas,Equatorial Guinea,804E0D2F0,Medium
+804E90950,Terry Coffey,French Polynesia,804E90950,Low
+804ED4F60,Gina Wilson,Belarus,804ED4F60,Low
+804F15F00,Vincent Dalton,Saint Kitts and Nevis,804F15F00,Medium
+804F4CAD0,Jennifer Singleton,Moldova,804F4CAD0,Low
+80502CDE0,Richard Smith,Mauritania,80502CDE0,Low
+805078010,Jacob Curry,Estonia,805078010,High
+8050CFE80,Samantha Bentley,Botswana,8050CFE80,Low
+805125E70,Kaitlyn Harvey,Western Sahara,805125E70,Low
+8051494B0,Suzanne Walker,Bahrain,8051494B0,Medium
+805198DA0,Julie Haynes,Pakistan,805198DA0,Low
+80526DAB0,Charles Shah,Gabon,80526DAB0,Low
+8052D3220,Audrey Young DDS,Iceland,8052D3220,Medium
+805314C00,Michael Paul,Yemen,805314C00,Low
+8053E3C30,Laurie Barber,Turks and Caicos Islands,8053E3C30,Low
+8053FA9E0,Brett Burns,Ireland,8053FA9E0,Low
+805441E00,Diana Vaughn,Cuba,805441E00,Low
+8054C97C0,Trevor Foley,Bolivia,8054C97C0,Low
+805571620,Mrs. Stephanie Newman,Bahamas,805571620,Low
+8055AFD70,Colton Martinez,Thailand,8055AFD70,Low
+805624DD0,Anna Lewis,Northern Mariana Islands,805624DD0,Low
+805703500,Alison Buchanan,Ecuador,805703500,Low
+80570D870,Rachel Harris DVM,Micronesia,80570D870,Low
+805718760,Daniel Kane,Greenland,805718760,Low
+805769430,Rachel Carlson,Falkland Islands (Malvinas),805769430,Medium
+805951600,Brianna Anderson,El Salvador,805951600,Medium
+8059BA5E0,Ashley Delacruz,Bulgaria,8059BA5E0,Low
+8059D7D00,Richard Young,Gibraltar,8059D7D00,Low
+805A0CB50,Derek Martinez,Italy,805A0CB50,Low
+805A0F8B0,Nichole Alvarez,Slovakia (Slovak Republic),805A0F8B0,Low
+805A24290,Kevin Hayes,Cyprus,805A24290,Medium
+805A9ED50,Amanda Logan,Tonga,805A9ED50,Low
+805AB6580,Elizabeth Schneider,Antarctica (the territory South of 60 deg S),805AB6580,Low
+805B26EA0,John Morales,Poland,805B26EA0,Low
+805B8BB80,Micheal Wallace,United Arab Emirates,805B8BB80,Low
+805CDA130,Lee Jones,Falkland Islands (Malvinas),805CDA130,Low
+805CE7A90,Lauren Joseph,Hong Kong,805CE7A90,Low
+805D34770,Kerry Chavez DDS,Bolivia,805D34770,Low
+805D79140,Ashley Pena,Turkey,805D79140,Medium
+805DC2520,Michelle Lewis,Korea,805DC2520,Medium
+805DD0990,Jennifer Wilcox,Iran,805DD0990,Low
+805DD31C0,Brandon Simmons,Papua New Guinea,805DD31C0,Medium
+805EED740,Troy Mcdaniel,Lebanon,805EED740,Low
+805EF3560,Ronald Davis,Bhutan,805EF3560,Low
+805EFD340,Jacqueline Anderson,Bahamas,805EFD340,Low
+805FA2BB1,Kristina Rivera,British Virgin Islands,805FA2BB1,Low
+805FCA7D0,Shane Pugh,Jamaica,805FCA7D0,Medium
+806096E10,Michelle Schmitt,Netherlands Antilles,806096E10,Medium
+8060AFE50,Brian Romero,Cape Verde,8060AFE50,Medium
+806110AF0,Courtney Rodriguez,Tanzania,806110AF0,Medium
+806185740,Ashley Ramirez,Czech Republic,806185740,Low
+80619F170,Sarah Villegas,Svalbard & Jan Mayen Islands,80619F170,Low
+80623C860,Megan Hawkins,New Caledonia,80623C860,Low
+8062492E0,Sandra Adams,Cocos (Keeling) Islands,8062492E0,Medium
+806311B80,Phillip Dorsey,Guernsey,806311B80,Medium
+8063568D0,Sergio Knight,Iran,8063568D0,Low
+8064C8820,Patrick Bonilla,Bermuda,8064C8820,Low
+8064ED2F0,Cindy Barnes,Guam,8064ED2F0,Low
+806515CF0,Eric Nguyen,Western Sahara,806515CF0,Medium
+8065F4020,Angela Williams,Cayman Islands,8065F4020,Medium
+80660E630,Amber Miller,Kenya,80660E630,High
+8066DBB20,Karla Ramos,Faroe Islands,8066DBB20,Medium
+80676E9D0,Jose Reed,Bouvet Island (Bouvetoya),80676E9D0,Medium
+806788380,Michael Tucker,Papua New Guinea,806788380,Low
+8068029D0,Daniel Joyce,Azerbaijan,8068029D0,Low
+80689C4D0,Eric Clark,Burundi,80689C4D0,Low
+8068A3010,Donna Wilson,Luxembourg,8068A3010,Medium
+80694B5F0,Casey James,Romania,80694B5F0,Medium
+806966C60,Justin Barnett,Guinea,806966C60,Medium
+806989F40,Scott Williams,Andorra,806989F40,Medium
+8069C48B0,Blake Edwards,Japan,8069C48B0,Low
+806A47240,Michelle Butler,Brazil,806A47240,Medium
+806A591E0,Vincent Jackson,Yemen,806A591E0,Low
+806AF7C70,Sandra Gillespie,Benin,806AF7C70,Medium
+806B3DB00,Brian Graham,Iran,806B3DB00,Medium
+806BC6340,Jennifer Collins,Guadeloupe,806BC6340,Low
+806BFE4D0,Richard Jones,North Macedonia,806BFE4D0,Medium
+806C6E560,Jordan Bullock,Guernsey,806C6E560,Low
+806CDC5F0,Tyler Brewer,Cameroon,806CDC5F0,Low
+806CFE720,Charles Gonzalez,Netherlands,806CFE720,Medium
+806D5EF00,Peter Jones,Zambia,806D5EF00,Low
+806D663F0,Kathleen Webster,Senegal,806D663F0,Low
+806D79F20,Melanie Macias,Norway,806D79F20,Low
+806D7D990,Lori Lin,Niue,806D7D990,Low
+806D90200,Jeremiah Harrison,Norfolk Island,806D90200,Medium
+806DA8BF0,Donald Brown,Madagascar,806DA8BF0,High
+806E56560,Joel Johnson,Heard Island and McDonald Islands,806E56560,Low
+806E77290,Angela Lin,Timor-Leste,806E77290,Low
+806E8E170,Kirk Cruz,Mozambique,806E8E170,Low
+806EA4730,Rebecca Huang,Korea,806EA4730,High
+806ECB480,Laura Lopez,Netherlands,806ECB480,Low
+806F01290,Chris Brown,Bosnia and Herzegovina,806F01290,Medium
+806F2BBD0,Sara Haas,Belize,806F2BBD0,Low
+806F53F90,Carrie Wright,Kazakhstan,806F53F90,High
+806F692F0,Kelly Bishop MD,United States Virgin Islands,806F692F0,Low
+806FD0080,Jason Morgan,Netherlands Antilles,806FD0080,High
+806FE7D00,Mark Cook,Greenland,806FE7D00,Low
+80711DFC0,Michael Mitchell,Saint Kitts and Nevis,80711DFC0,Low
+80714C310,Tracey Morrison,Canada,80714C310,Low
+8071D95E0,Kevin Thomas,Guernsey,8071D95E0,Low
+80720A620,Matthew Bates,Bulgaria,80720A620,Low
+807328630,Teresa Collins,Honduras,807328630,Low
+80734C290,Erin Anderson,Reunion,80734C290,Low
+80736E5C0,Nancy Jennings,Malta,80736E5C0,Low
+807481AF0,Michael Romero,Andorra,807481AF0,Low
+8075523B0,Christopher Lewis,Yemen,8075523B0,Low
+8075BE8C0,Cheryl Cooke,Cape Verde,8075BE8C0,Low
+80766A3D0,Ryan Garcia,Sierra Leone,80766A3D0,Low
+8076D6E50,Nancy Rose,Panama,8076D6E50,Medium
+80775BA70,Ralph Anderson,Honduras,80775BA70,Low
+807776300,Christopher Schwartz,Nigeria,807776300,Low
+80777E5C0,Carol Kim,Isle of Man,80777E5C0,Low
+80779AFC0,Nathan Montes,New Zealand,80779AFC0,Low
+8077F7C20,Paul Cole,Martinique,8077F7C20,Low
+80790E150,Vincent Mueller,United Kingdom,80790E150,Low
+8079762D0,Holly Valentine,Kazakhstan,8079762D0,Low
+8079AAA10,Douglas Reyes,Marshall Islands,8079AAA10,Low
+807A2A400,Christopher Gonzalez,Netherlands,807A2A400,Low
+807A63060,David Davidson,Tunisia,807A63060,Medium
+807A8BFF0,Timothy Dawson,Maldives,807A8BFF0,Low
+807AA4750,Dominique Hines,Faroe Islands,807AA4750,Low
+807ACADE0,Jose Guerra,Bermuda,807ACADE0,Low
+807B0FC30,Courtney Hayes,Guernsey,807B0FC30,Low
+807B1F260,Jennifer Sanders,Holy See (Vatican City State),807B1F260,Low
+807C50360,Zachary Brooks,Antarctica (the territory South of 60 deg S),807C50360,Low
+807C523B0,Brett Espinoza,Grenada,807C523B0,Low
+807C7C430,Brenda Mitchell,Switzerland,807C7C430,Low
+807C9D3A0,Ronald Blake,Latvia,807C9D3A0,Medium
+807CACED0,Aaron Miller,Equatorial Guinea,807CACED0,Low
+807CD0050,Chase Bentley,New Caledonia,807CD0050,Medium
+807CD4050,Ashley Roberts,Gabon,807CD4050,Low
+807D80E70,David Fowler,Nigeria,807D80E70,Low
+807DC0D70,Brian Stein,Nepal,807DC0D70,Low
+807DE2E10,Lynn Andrews,Saint Barthelemy,807DE2E10,Low
+807E3B150,Jeffrey Mendez,Dominican Republic,807E3B150,Low
+807E4A3D0,Chelsea Barnett,Malta,807E4A3D0,Low
+807E9A5B0,Andrea Fox,Madagascar,807E9A5B0,Low
+807EE8EB0,Katie Smith,Tunisia,807EE8EB0,Low
+807EFA590,Mark Zavala,El Salvador,807EFA590,Low
+807F59C60,Heather Jones,Dominican Republic,807F59C60,Low
+807F7AF60,Lori Ingram,Saint Pierre and Miquelon,807F7AF60,Low
+807FE6A50,Brandi Bell,Guadeloupe,807FE6A50,Low
+808077E90,Carrie Maxwell,Kyrgyz Republic,808077E90,Medium
+8080A28A0,Mrs. Catherine Taylor,Saint Barthelemy,8080A28A0,Medium
+8080D49F0,Judith Carter,Aruba,8080D49F0,Low
+8080D8570,Stacey Stewart,Georgia,8080D8570,Low
+8080FF4A0,Virginia Daniels,El Salvador,8080FF4A0,Low
+80811F3E0,Matthew Mitchell,Tokelau,80811F3E0,Low
+80814F280,Sharon Rivera,British Virgin Islands,80814F280,Low
+808153A70,Jessica Ross,Kazakhstan,808153A70,Medium
+808176090,Jasmine Beltran,Luxembourg,808176090,Medium
+8081F2B60,Holly Salinas,Ethiopia,8081F2B60,Low
+80822D000,Monica Miller,Netherlands,80822D000,Low
+80828DBC0,Catherine Carter MD,Greece,80828DBC0,Low
+8082B1330,Elizabeth Morrison,Japan,8082B1330,Low
+8083881A0,Jeremy West,Saint Lucia,8083881A0,Low
+8083E41E0,Heather Bolton,Falkland Islands (Malvinas),8083E41E0,Low
+8084157F0,Rebecca Brown,Paraguay,8084157F0,Medium
+808444B20,Heidi Owen,Philippines,808444B20,Low
+808660B60,Andre Allison,Philippines,808660B60,Low
+80866A7E0,Amanda Jones,Slovakia (Slovak Republic),80866A7E0,Low
+808697F70,Heidi Herring,Antigua and Barbuda,808697F70,Low
+8086C8A00,Meghan Rush,Holy See (Vatican City State),8086C8A00,Low
+80876B4A0,Billy Taylor,Haiti,80876B4A0,Low
+80877E700,Matthew Wright,Brazil,80877E700,Low
+8088317F0,Cody Holmes,United States Minor Outlying Islands,8088317F0,Low
+80884F130,Deborah Green,Kiribati,80884F130,Low
+80888FA00,Logan Benson,Liechtenstein,80888FA00,Medium
+8088A8FF0,Chad Jones,China,8088A8FF0,Medium
+8088B0390,Jill Miller,Pitcairn Islands,8088B0390,Low
+8088FCA40,Victoria Contreras,Russian Federation,8088FCA40,Low
+808903EC0,Joshua Vance,Thailand,808903EC0,Low
+808930C40,Michael Graves,China,808930C40,High
+8089A5AB0,Katie Martinez,Cook Islands,8089A5AB0,Low
+8089FE4A0,Cynthia Snyder,Guyana,8089FE4A0,Low
+808A826F0,Jackie Lara,Micronesia,808A826F0,Low
+808AA7580,Stephen Jones,Indonesia,808AA7580,Medium
+808AD9180,Dr. Kelly Hammond DVM,Barbados,808AD9180,Low
+808B18F30,Evan Jones,Lao People's Democratic Republic,808B18F30,Medium
+808B9ABB0,Haley Humphrey,Slovakia (Slovak Republic),808B9ABB0,Low
+808BDDFF0,Laurie Saunders,Bulgaria,808BDDFF0,High
+808CA0F70,Thomas Brown,British Virgin Islands,808CA0F70,Low
+808D4CF90,Elizabeth Martin,Vietnam,808D4CF90,High
+808D62D60,Hannah Everett,Ukraine,808D62D60,Medium
+808D8FB20,Blake Gonzalez,Zimbabwe,808D8FB20,Low
+808D94BD0,Beth Turner,Martinique,808D94BD0,Low
+808E13B70,Martin Vargas,Mozambique,808E13B70,Low
+808F06960,Matthew Le,Netherlands,808F06960,Medium
+8090AC860,Thomas Williams,Tonga,8090AC860,Low
+80918FEC0,Angel May,Morocco,80918FEC0,Medium
+80920B580,Daniel Armstrong,Niger,80920B580,Low
+80922CDA0,Kathleen Burton,French Guiana,80922CDA0,Low
+8092927E0,Elizabeth Sanchez,Sri Lanka,8092927E0,Low
+8092F28B0,Elizabeth Jones,Bahamas,8092F28B0,Low
+809326550,Jason Marshall,Guam,809326550,Low
+809334D30,Emily Higgins,Saint Martin,809334D30,Medium
+80938EF50,Haley Ross PhD,Malaysia,80938EF50,Low
+809390850,Emma Owens,Ethiopia,809390850,Low
+8093DF330,Charles Williams,Yemen,8093DF330,Low
+8093E2B50,Luis Wright,Tonga,8093E2B50,Low
+80941CF80,Robin Peck,Saint Helena,80941CF80,Low
+8094FBAB0,Phillip Jimenez,Malaysia,8094FBAB0,Low
+8095375C0,Shawn Jimenez,Bermuda,8095375C0,Low
+8095E3A10,Kathy Levy,Cuba,8095E3A10,Low
+809613680,Amber Campbell,Nepal,809613680,Low
+809639E80,Martha Ruiz,Mauritania,809639E80,Low
+80964E5D0,Brian Anderson,Estonia,80964E5D0,Low
+80966B850,Pamela Diaz,Iran,80966B850,Low
+80967E310,Justin Cox,France,80967E310,Low
+8096826D0,Jonathan Duran,Fiji,8096826D0,Low
+80969E460,Lisa Carr,Brunei Darussalam,80969E460,Low
+8096D4670,Jennifer Norton,Guadeloupe,8096D4670,Low
+8097B7580,Holly Thomas,Netherlands,8097B7580,Low
+8098E55D0,Kathryn Williams,Burundi,8098E55D0,Low
+8098EE660,Regina Stone,Canada,8098EE660,Medium
+8098FA6C0,Kaylee Murphy,New Zealand,8098FA6C0,Low
+80997F8D0,James Jensen,Tajikistan,80997F8D0,Low
+8099BC410,George Clayton,Martinique,8099BC410,Medium
+8099CA2C0,Justin Wells Jr.,Greenland,8099CA2C0,Medium
+809A382B0,Veronica Silva,South Africa,809A382B0,Low
+809B4FC60,Shelby Soto,Nepal,809B4FC60,Low
+809B63630,Walter Patton,Singapore,809B63630,Low
+809C28A70,Crystal Williams,Lesotho,809C28A70,Medium
+809C489D0,Mark Harvey,Tajikistan,809C489D0,Medium
+809D020F0,Roberto Allen,Montserrat,809D020F0,High
+809D22A40,Ashley Smith,Germany,809D22A40,Low
+809DBCF40,Jason Harris,Macao,809DBCF40,Low
+809DE9F20,Tami Salas,Saint Pierre and Miquelon,809DE9F20,Low
+809DF3570,Michele Stone,Monaco,809DF3570,Low
+809E02430,Matthew Fox,Germany,809E02430,Low
+809E5AD90,Julia Patel,Mayotte,809E5AD90,Low
+809EDAF40,Raymond Le,Norway,809EDAF40,Low
+809EFD3C0,Deborah Washington,Egypt,809EFD3C0,Low
+809F3D7D0,Edwin David,French Southern Territories,809F3D7D0,Low
+809FA9220,Michele Vaughn,Liechtenstein,809FA9220,Low
+809FD73D0,Gregory Peck,South Africa,809FD73D0,Low
+809FD9E00,Donna Berry,Mayotte,809FD9E00,Low
+809FE17B0,William Cardenas,Zimbabwe,809FE17B0,Low
+809FF8A10,Brianna Williams,Zimbabwe,809FF8A10,Low
+809FFB470,Hannah Ramos,Equatorial Guinea,809FFB470,Low
+80A0013C0,Cindy Clayton,Faroe Islands,80A0013C0,Low
+80A0493B0,Melissa Taylor,Nicaragua,80A0493B0,Low
+80A0585D0,Cynthia Williams,United Kingdom,80A0585D0,Low
+80A0D5F60,Margaret Williams,Isle of Man,80A0D5F60,Low
+80A0EE580,John Maldonado,Burundi,80A0EE580,Low
+80A0FC1B0,Joshua Hickman,Ireland,80A0FC1B0,Low
+80A195530,Shirley Alvarez,Pakistan,80A195530,Low
+80A19D8C0,Victor Morris,Oman,80A19D8C0,Low
+80A1C8FD0,Randy Pearson,Djibouti,80A1C8FD0,Low
+80A1E0F50,Miranda Zuniga,United States Minor Outlying Islands,80A1E0F50,Low
+80A2537D0,Jennifer Monroe,Vietnam,80A2537D0,Low
+80A2552B0,Yolanda Sanders,Lithuania,80A2552B0,Medium
+80A344340,Paul Brennan,French Guiana,80A344340,Low
+80A402F80,Alexandra Bradley,Botswana,80A402F80,Medium
+80A4F42A0,Frances Gibson,Norway,80A4F42A0,Medium
+80A4FBD40,Kathleen Mays,Thailand,80A4FBD40,Low
+80A599E60,Denise Lamb,Greenland,80A599E60,Low
+80A5E8880,Jimmy Scott,Colombia,80A5E8880,Low
+80A680CC0,George Phillips,Peru,80A680CC0,Low
+80A6B6D10,Casey Chase,Ukraine,80A6B6D10,High
+80A73C6D0,Jeffrey Murphy,Iran,80A73C6D0,Low
+80A759240,Cathy Taylor,Gibraltar,80A759240,Low
+80A7CF6F0,Adriana Reyes,Kiribati,80A7CF6F0,Medium
+80A8CEEA0,Tiffany Turner,Saint Kitts and Nevis,80A8CEEA0,Low
+80A968170,Deborah Ward,Dominica,80A968170,Medium
+80AA9F5A0,Bryan Parker,Iraq,80AA9F5A0,Medium
+80AAB7EA0,Tammy Barron,Sierra Leone,80AAB7EA0,Low
+80AB63160,Bruce Hendricks,French Polynesia,80AB63160,Low
+80AB75FE0,Daniel Bernard,Lesotho,80AB75FE0,Low
+80AB7E860,Paul Obrien,Israel,80AB7E860,Low
+80AB94680,Susan Todd,Spain,80AB94680,Low
+80ABD22A0,Colleen Wright,Saudi Arabia,80ABD22A0,Low
+80AC77410,Rachel Fox,Marshall Islands,80AC77410,Low
+80ACCB460,Angela Elliott,Bahamas,80ACCB460,Low
+80ACF6790,Stephanie Harris,Mauritania,80ACF6790,Medium
+80ADA2880,Garrett Meyer,Brazil,80ADA2880,Low
+80ADE12D0,Michelle Burns,United Arab Emirates,80ADE12D0,Low
+80ADF8B40,Rhonda Chavez,Malaysia,80ADF8B40,Low
+80AE10FC0,Justin Hansen,Peru,80AE10FC0,Low
+80AE4E900,Miranda Foster,Svalbard & Jan Mayen Islands,80AE4E900,Medium
+80AE5C890,Daniel Jones,Jamaica,80AE5C890,High
+80AE68790,Arthur Mcknight,Vietnam,80AE68790,Low
+80AE8B2B0,Victoria Kennedy,France,80AE8B2B0,Low
+80AEA85F0,Randy Cannon,Saint Lucia,80AEA85F0,Low
+80AEBB7D0,Jennifer Haney,Hong Kong,80AEBB7D0,Low
+80B004EB0,Thomas Bennett,Belgium,80B004EB0,High
+80B04F6D0,Mary Ryan,Palau,80B04F6D0,Low
+80B19FB20,Barbara Haney,India,80B19FB20,Low
+80B1B7060,Monica Walker,Afghanistan,80B1B7060,Low
+80B30BB50,Veronica Ford,Saint Helena,80B30BB50,Low
+80B3920F0,Kim Morrow,Egypt,80B3920F0,Low
+80B428C20,Christopher Lopez,Turkey,80B428C20,Low
+80B430DA0,Ashley Pacheco,Italy,80B430DA0,Medium
+80B45FAE0,Taylor Small,Dominican Republic,80B45FAE0,Medium
+80B46ACD0,Brian Johnson,Netherlands Antilles,80B46ACD0,Low
+80B483FA0,Shelby Sanchez,Aruba,80B483FA0,Low
+80B50F5E0,David Robinson,Tonga,80B50F5E0,High
+80B552AB0,Brenda Holder,Djibouti,80B552AB0,Medium
+80B57EE00,Monique Flores,Netherlands Antilles,80B57EE00,Low
+80B5EEF30,Sabrina Young,Turkey,80B5EEF30,Low
+80B617F60,Matthew Walker,French Southern Territories,80B617F60,Low
+80B618AF0,Justin Vargas,Saint Pierre and Miquelon,80B618AF0,Low
+80B61DB00,Lori Simmons,Lithuania,80B61DB00,Low
+80B6E0A70,Gregory Schneider,Hong Kong,80B6E0A70,Medium
+80B745630,Emma Butler,Canada,80B745630,Medium
+80B773700,Clinton Medina,Dominican Republic,80B773700,Low
+80B870070,Elizabeth Zimmerman,Sri Lanka,80B870070,High
+80B882470,Anthony Gutierrez,Israel,80B882470,Low
+80B8C4990,Brandi Sanchez,Costa Rica,80B8C4990,Medium
+80B94E9F0,Bob Cole,Heard Island and McDonald Islands,80B94E9F0,Low
+80B98F700,Nathaniel Lee,Ethiopia,80B98F700,Low
+80B9AC850,Larry Williams,Barbados,80B9AC850,Low
+80B9BA2C0,Philip Ramsey,Monaco,80B9BA2C0,High
+80B9C0D40,Daniel Meadows,Gabon,80B9C0D40,Low
+80BA1B0A0,Alexis Giles,Saint Vincent and the Grenadines,80BA1B0A0,Medium
+80BA558B0,Zachary Mendoza,Ecuador,80BA558B0,Low
+80BA88FE0,Michele Sanders,Dominican Republic,80BA88FE0,Low
+80BCD24D0,Patricia James,Martinique,80BCD24D0,Low
+80BDADC00,Elizabeth Ward,Turkmenistan,80BDADC00,Low
+80BDE4420,Brett Zavala MD,Taiwan,80BDE4420,Low
+80BDE7130,Dale Edwards,Aruba,80BDE7130,Medium
+80BE67630,Connie Thomas,Eritrea,80BE67630,Medium
+80BEC3890,Lauren Cortez,French Polynesia,80BEC3890,Low
+80BECAF80,Gary James,Syrian Arab Republic,80BECAF80,Medium
+80BEF7060,Juan Harding,Guadeloupe,80BEF7060,Low
+80BEFAE20,Roberto Levy,Norway,80BEFAE20,Low
+80BF75B90,Julia Oconnor,Guinea,80BF75B90,Low
+80BFACCD0,Nathan Freeman,United States Virgin Islands,80BFACCD0,Low
+80BFEE6E0,Wanda Bernard,Malta,80BFEE6E0,Low
+80BFFF960,Ryan Landry,Paraguay,80BFFF960,Medium
+80C002F20,Aaron Taylor,Norfolk Island,80C002F20,Low
+80C010430,Michael Smith,Madagascar,80C010430,Low
+80C115990,Antonio Little,Vietnam,80C115990,Medium
+80C1ABDE0,Karen Freeman,Albania,80C1ABDE0,Low
+80C2044A0,Jennifer Smith,Saint Helena,80C2044A0,Medium
+80C3AF180,William Smith,Suriname,80C3AF180,Low
+80C423720,Jessica Case,Christmas Island,80C423720,Low
+80C4C7AC0,Brent Hernandez,Congo,80C4C7AC0,Low
+80C61F670,Dawn Gomez,South Africa,80C61F670,Medium
+80C62D0B0,Jake Sullivan,Mongolia,80C62D0B0,Low
+80C645C80,Michael Evans,Sweden,80C645C80,Low
+80C6A19A0,Martha Garrison,Senegal,80C6A19A0,Low
+80C6DBEB0,Jared Bennett,Lebanon,80C6DBEB0,Medium
+80C8A72A0,Adam Jackson,Luxembourg,80C8A72A0,Low
+80C94D200,Maria Rivera,Togo,80C94D200,Low
+80CA10180,Stephanie Ellison,Denmark,80CA10180,Low
+80CA396E0,Sean Clay,Lebanon,80CA396E0,Medium
+80CAE7060,Thomas Cohen,Fiji,80CAE7060,Low
+80CAFC320,Kristy Johnson,Vanuatu,80CAFC320,Low
+80CB220E0,Alexis Clark,Cambodia,80CB220E0,Low
+80CB562E0,Michelle Sanders,Belarus,80CB562E0,Low
+80CB9DD70,Justin Knight,Thailand,80CB9DD70,Low
+80CBB3200,Steven Rivera,Saudi Arabia,80CBB3200,Low
+80CC00720,Rachel Norris,Belgium,80CC00720,Low
+80CC821F0,Valerie Brown,Jordan,80CC821F0,Low
+80CCA5260,Billy Jacobs,Nicaragua,80CCA5260,Low
+80CCDDFB0,Jennifer Ayala,Antarctica (the territory South of 60 deg S),80CCDDFB0,Low
+80CDD4350,Rachel Hayes,Denmark,80CDD4350,Low
+80CE4ABC0,Todd Reynolds,Pitcairn Islands,80CE4ABC0,Low
+80CFE1960,Jamie Barton,French Polynesia,80CFE1960,Low
+80D018930,Michelle Miller,Cape Verde,80D018930,Low
+80D050ED0,Richard Moore,Iceland,80D050ED0,Low
+80D06AC20,Brian Smith,Gambia,80D06AC20,Low
+80D079290,Philip Garcia,Benin,80D079290,Low
+80D08F540,Jerry Peters,Ireland,80D08F540,Medium
+80D192830,Brandon Spencer,Nepal,80D192830,Low
+80D266B50,Erika Cruz,French Guiana,80D266B50,Low
+80D2A3C10,Richard Hardy,Monaco,80D2A3C10,Low
+80D437B20,Vanessa Armstrong,Chile,80D437B20,Low
+80D4C5E10,Caroline Adams,Ethiopia,80D4C5E10,High
+80D4F1D90,Arthur Hamilton MD,Liberia,80D4F1D90,Low
+80D555E10,Heather Raymond,Saint Helena,80D555E10,Low
+80D59B560,Linda Gonzalez,Botswana,80D59B560,Low
+80D59BDC0,Adam Foster,Tajikistan,80D59BDC0,Low
+80D64EC50,Regina Rivera,Grenada,80D64EC50,Low
+80D6836F0,Rodney Curtis,Nepal,80D6836F0,Low
+80D73C070,Frank Valentine,Cook Islands,80D73C070,Low
+80D76EF40,Christopher Sanders,Ghana,80D76EF40,Low
+80D7EE9E0,Michael Henry,Morocco,80D7EE9E0,Low
+80D8D7C70,Erika Ramirez,Solomon Islands,80D8D7C70,High
+80D9469F0,Brian Elliott,Nauru,80D9469F0,Low
+80D990260,Catherine Saunders MD,Saint Lucia,80D990260,Low
+80D9B9FD0,Michael Gonzales,French Guiana,80D9B9FD0,Low
+80D9E8AC0,Andrea Abbott,South Africa,80D9E8AC0,Medium
+80DA73BF0,Jonathan Schultz,Dominican Republic,80DA73BF0,Low
+80DAE4500,Christian Henderson,Honduras,80DAE4500,Medium
+80DB0AA30,William Mendoza,Iran,80DB0AA30,Low
+80DB44090,Tammy Kane,Italy,80DB44090,Low
+80DC01210,Rachel Ward,Ukraine,80DC01210,Low
+80DC7F790,Linda Rocha,Botswana,80DC7F790,Low
+80DE85570,Mary Kelly,Oman,80DE85570,Low
+80DEE27D0,Kristine Newman,Oman,80DEE27D0,Medium
+80DF886E0,Paul Sheppard,Jersey,80DF886E0,Low
+80DFA7EA0,Brett Walker,San Marino,80DFA7EA0,Medium
+80E02F4B0,Lauren Johnston,Kiribati,80E02F4B0,Low
+80E0EE0B0,Joel Frazier,Portugal,80E0EE0B0,Low
+80E136170,Haley Johnson,Bosnia and Herzegovina,80E136170,Low
+80E145DA0,Thomas Miller,Switzerland,80E145DA0,Low
+80E1CA820,Brenda Collins,Korea,80E1CA820,Low
+80E1CA910,Kelly Bailey,Bhutan,80E1CA910,Low
+80E26CD20,Michael Flores,French Southern Territories,80E26CD20,Low
+80E2E6050,Michael Johnson,Guam,80E2E6050,High
+80E2F85D0,Megan Martin,Saint Vincent and the Grenadines,80E2F85D0,Low
+80E330AB0,Christopher Moore,Monaco,80E330AB0,Medium
+80E337F70,Joel Salinas,Norfolk Island,80E337F70,Low
+80E3ED5C0,Martin Reynolds,Antarctica (the territory South of 60 deg S),80E3ED5C0,Medium
+80E48B7A0,Sonya Cole,Japan,80E48B7A0,Low
+80E4D0390,Michael Harris,Sao Tome and Principe,80E4D0390,Low
+80E528170,Rebecca Ray,South Georgia and the South Sandwich Islands,80E528170,Low
+80E550120,Chelsea Nguyen,Kuwait,80E550120,Low
+80E56F9F0,Michael Burns,Northern Mariana Islands,80E56F9F0,Medium
+80E5E0320,James Long,Brazil,80E5E0320,High
+80E641BB0,Ryan Williamson,Suriname,80E641BB0,Low
+80E649670,Rebecca Sellers,Nauru,80E649670,Low
+80E66F9C0,Cesar Wilson,Gambia,80E66F9C0,Low
+80E6B3560,James Thomas,Iceland,80E6B3560,Low
+80E6DB5B0,Chad Reyes,Colombia,80E6DB5B0,Medium
+80E709690,Mr. Thomas Arias,China,80E709690,Low
+80E762110,Katherine Taylor,Germany,80E762110,Low
+80E795940,Lisa Glenn,Zambia,80E795940,Low
+80E7A4FA0,Chad Ochoa,Monaco,80E7A4FA0,Low
+80E9090C0,Kathleen Cohen,Israel,80E9090C0,Low
+80E9331D0,Jill Jackson,Mongolia,80E9331D0,Low
+80E9486A0,Philip Carter,Falkland Islands (Malvinas),80E9486A0,Low
+80E9778E0,Dylan Norman,Mongolia,80E9778E0,Low
+80E9E4A30,Pamela Dunn,Bouvet Island (Bouvetoya),80E9E4A30,Low
+80EA2DA50,Debra Daniels,Haiti,80EA2DA50,Low
+80EA87680,Nicole Wolf,Kazakhstan,80EA87680,Low
+80EB0DC50,Wanda Garcia,Switzerland,80EB0DC50,Low
+80EB7BF50,Danielle Golden,Antigua and Barbuda,80EB7BF50,Low
+80EBD7AE0,Gregory Montoya,Kazakhstan,80EBD7AE0,Low
+80EC3FEB0,Autumn Cain,Cote d'Ivoire,80EC3FEB0,Low
+80EC59E70,Leah Bell,Russian Federation,80EC59E70,Medium
+80EC68410,Jessica Jensen,Slovenia,80EC68410,Medium
+80ECE4CA0,Daniel Brown,Guernsey,80ECE4CA0,Low
+80ECEF920,Linda Jackson,Romania,80ECEF920,Low
+80ECFD4D0,Kenneth Farley,Malaysia,80ECFD4D0,Medium
+80ED3E9B0,Miss Anna Estes,Solomon Islands,80ED3E9B0,Low
+80EE0FB00,Anthony Ramirez,Palau,80EE0FB00,Low
+80EE85CD0,Sean Wright,Rwanda,80EE85CD0,Low
+80EE94A90,David Bridges,India,80EE94A90,Medium
+80EF13770,Kenneth Adams MD,Korea,80EF13770,Medium
+80EF8E2D0,Robert Mack,Iraq,80EF8E2D0,Low
+80EFBA910,Diana Mayer,Heard Island and McDonald Islands,80EFBA910,Low
+80F0D2AB0,John Perkins,Trinidad and Tobago,80F0D2AB0,Low
+80F0FFBF0,Morgan Simon,Kuwait,80F0FFBF0,Low
+80F1084B0,Melissa Horn,South Africa,80F1084B0,Low
+80F124C70,Claudia Jordan,Croatia,80F124C70,Low
+80F178D30,Frank Campbell MD,Bulgaria,80F178D30,Low
+80F1F8CE0,Karina Cooper,Pitcairn Islands,80F1F8CE0,Low
+80F211F30,Amber Sims,Taiwan,80F211F30,Low
+80F21BAF0,Caleb Mathews,Kazakhstan,80F21BAF0,Medium
+80F2EBFE0,William Patterson,Portugal,80F2EBFE0,Low
+80F460050,Sonia Turner,Tunisia,80F460050,Low
+80F463D20,Denise Pena,El Salvador,80F463D20,Low
+80F466F70,Matthew Banks,Austria,80F466F70,Low
+80F49A270,Eric Lyons,Djibouti,80F49A270,Low
+80F4A8780,Brandon Davis,Croatia,80F4A8780,Low
+80F4BD3A0,Casey Perez,Pitcairn Islands,80F4BD3A0,Low
+80F4E70B0,Adam Cooper,British Indian Ocean Territory (Chagos Archipelago),80F4E70B0,Low
+80F500370,Jennifer Anderson MD,Hungary,80F500370,High
+80F56EE40,Robert Garcia,Heard Island and McDonald Islands,80F56EE40,Medium
+80F5796D0,Breanna Ayala,Sao Tome and Principe,80F5796D0,Low
+80F57C620,Margaret Byrd,Bangladesh,80F57C620,High
+80F587CE0,Alejandra Santos,Kazakhstan,80F587CE0,High
+80F60D330,Daniel Goodman,Uruguay,80F60D330,Low
+80F669B00,Michael Heath,Benin,80F669B00,Low
+80F69D190,Brenda Martinez,Saint Lucia,80F69D190,Low
+80F6BA500,Victor Edwards,Burundi,80F6BA500,Medium
+80F6D3C70,Matthew Wright,Netherlands Antilles,80F6D3C70,Low
+80F79F010,Lisa Maxwell,Portugal,80F79F010,Low
+80F87C640,Ryan Liu,Costa Rica,80F87C640,Medium
+80F8B7290,Katrina Adkins,French Polynesia,80F8B7290,Low
+80F8C3CA0,Rachel Leon,Dominican Republic,80F8C3CA0,Low
+80F903660,Brian Porter MD,Marshall Islands,80F903660,Low
+80FA98B00,Alexandria Ward,Ghana,80FA98B00,Low
+80FA9EB10,Scott Carroll,Haiti,80FA9EB10,Low
+80FB61270,Carrie Ruiz,Sierra Leone,80FB61270,Low
+80FC107F0,Kevin Smith,Cuba,80FC107F0,Low
+80FC16870,Antonio Mccormick,Madagascar,80FC16870,Low
+80FC35230,Micheal Wang,Jamaica,80FC35230,Medium
+80FC517D0,Angela Herrera,Nicaragua,80FC517D0,Low
+80FC8F980,Bradley Miller,Uruguay,80FC8F980,Low
+80FE6AB90,Robert Herrera,India,80FE6AB90,Low
+80FEF6B80,Pamela Santos,Norway,80FEF6B80,Medium
+80FF15F30,Michael Blair,Tanzania,80FF15F30,Medium
+80FF28080,David Middleton,Brazil,80FF28080,Low
+80FF589E0,Lee Parker,Saint Vincent and the Grenadines,80FF589E0,Low
+8100256D0,Casey Smith,Burundi,8100256D0,Low
+8100381E0,Carla Benton,Mali,8100381E0,Low
+810048300,Samantha Green,Holy See (Vatican City State),810048300,High
+8100A2E80,Richard Adams,Turks and Caicos Islands,8100A2E80,Low
+810184CE0,Steven Rogers,Japan,810184CE0,Low
+810193480,Austin Joseph,Morocco,810193480,High
+8101E0CD0,Kathleen Dixon,Azerbaijan,8101E0CD0,Low
+81020A870,Mr. Jacob Scott Jr.,Montserrat,81020A870,Low
+810225970,Ashley Yang,Afghanistan,810225970,Low
+81024DE80,Scott Sanchez,Latvia,81024DE80,Low
+8102AEAC0,Thomas White,Togo,8102AEAC0,Low
+8102CCEC0,Robert Klein,Palau,8102CCEC0,Medium
+8102EDBF0,Frank Butler,Saint Helena,8102EDBF0,Low
+81034D310,Roger Duncan,British Indian Ocean Territory (Chagos Archipelago),81034D310,Medium
+8103C2850,Stephanie White,Spain,8103C2850,Low
+81040ACB0,Amber Morales,Turkey,81040ACB0,Low
+810495360,Douglas Kirk,Greece,810495360,Medium
+810518810,Jesus Wood,French Guiana,810518810,Low
+81055CF40,Elizabeth Dean,Kyrgyz Republic,81055CF40,Low
+810614BF0,Wesley Cuevas,Singapore,810614BF0,Low
+810632F70,Steven Hodges,Ecuador,810632F70,High
+810658100,Timothy Johnson,Mauritius,810658100,Low
+8106F9FB0,Ryan Wiley,Zambia,8106F9FB0,Low
+810771260,Peter Bennett,Saint Pierre and Miquelon,810771260,Low
+8107E0040,Ashley Moreno,Dominica,8107E0040,Low
+8107F5090,Tyrone Kaufman,Cambodia,8107F5090,Low
+810945F80,Anna Morse,Ukraine,810945F80,Low
+810A05EF0,Jennifer Huang,Kuwait,810A05EF0,High
+810A2A110,Angela Davis,Burkina Faso,810A2A110,Medium
+810A4CA30,Jennifer Vargas,Bahamas,810A4CA30,Low
+810A9E040,Victor Young,Eritrea,810A9E040,Low
+810AE2970,Tammy Long,Switzerland,810AE2970,Medium
+810B21010,Emily Nelson,Belarus,810B21010,Low
+810B68EE0,Brandy Carrillo,Botswana,810B68EE0,Low
+810BD7180,Christopher Owens,Ireland,810BD7180,Low
+810C383A0,Hunter Townsend,Korea,810C383A0,Low
+810C5BEA0,Derek Wilson,Cayman Islands,810C5BEA0,Medium
+810CB75B0,Elizabeth Bush,Netherlands,810CB75B0,High
+810D033F0,Russell Murphy,Bermuda,810D033F0,Low
+810D1B3D0,Tracy Foster,Australia,810D1B3D0,Low
+810D97E80,Debbie Ewing,Antarctica (the territory South of 60 deg S),810D97E80,Low
+810E92FB0,Sarah Hawkins,Mexico,810E92FB0,Medium
+810EC7D20,Joel Lara,Burundi,810EC7D20,Low
+810F09E90,Antonio Norman,Cyprus,810F09E90,Medium
+810F13C60,Rodney Watson,Norfolk Island,810F13C60,Medium
+810F19150,Angela Willis,United States Virgin Islands,810F19150,Low
+810F21BC0,Alison Brown,United Kingdom,810F21BC0,Medium
+810FEE3D0,Rhonda Davis,Tanzania,810FEE3D0,Low
+811019F20,Erin Williams,Kyrgyz Republic,811019F20,Medium
+81102EEB0,Thomas Hamilton,Saint Kitts and Nevis,81102EEB0,Low
+8110E5AD0,Allen Vega,China,8110E5AD0,Medium
+8110F4420,Terry Hill,Kiribati,8110F4420,Low
+811115960,Amanda Harvey,Ecuador,811115960,Low
+81114A0A0,Kathleen Andrade,Lesotho,81114A0A0,Low
+811162BE0,Douglas Taylor,Cook Islands,811162BE0,High
+811163860,Rebecca Wright,Spain,811163860,Low
+8111A5600,Alicia Reyes,Rwanda,8111A5600,Low
+8111C9430,Joshua Washington,United States Minor Outlying Islands,8111C9430,Low
+8111C9F30,Erica Nelson,Anguilla,8111C9F30,Low
+81125A3E0,Daniel Huang,Slovakia (Slovak Republic),81125A3E0,Low
+8112A73F0,Robert Ruiz,Guinea-Bissau,8112A73F0,Low
+81131E870,Yvonne Dickson,Bolivia,81131E870,Low
+8113551E0,David Ferguson,Somalia,8113551E0,Low
+811488DA0,Amy Davies,Cyprus,811488DA0,Low
+8114FF130,Vickie Price,Vietnam,8114FF130,Low
+811511650,Sarah Thompson,Nauru,811511650,Low
+81161EBA0,Oscar Howard,Nauru,81161EBA0,Low
+811625010,Michael Meza,Mongolia,811625010,Medium
+811630BD0,Travis Copeland,Sudan,811630BD0,Low
+811697700,Katherine Parker,Liechtenstein,811697700,Low
+8116AF110,Anthony Guzman,Angola,8116AF110,Low
+8116C6720,April Hardin,Cook Islands,8116C6720,Medium
+81183FB50,Gina Thompson,Spain,81183FB50,Low
+8118AFD80,Erica Johnson,Namibia,8118AFD80,Low
+8118FA170,Brenda Rodriguez,Malta,8118FA170,Medium
+8119469F0,Toni Brooks,Western Sahara,8119469F0,High
+811A4BC90,Laurie Rogers,Gibraltar,811A4BC90,Low
+811AAB030,Christopher Fry,Somalia,811AAB030,Low
+811AB66D0,Katelyn Stewart,Russian Federation,811AB66D0,Low
+811ABFBA0,Melissa Mcfarland,Solomon Islands,811ABFBA0,Low
+811B8EE20,Max Olsen,Honduras,811B8EE20,Medium
+811BE8020,Michael Anderson,Saint Lucia,811BE8020,Medium
+811C08210,Michael Berry,Thailand,811C08210,Low
+811C36320,Traci Johnson DDS,Uruguay,811C36320,Low
+811C7E5B0,Lisa Bowman,Bosnia and Herzegovina,811C7E5B0,Low
+811D09920,Brenda Mcgee,Dominica,811D09920,Low
+811D45DF0,Francisco Fields,Benin,811D45DF0,Low
+811D8BC80,Meagan Daniel,Grenada,811D8BC80,Low
+811D9B980,Derek Wright,Bangladesh,811D9B980,Low
+811E12DF0,Richard Le,Australia,811E12DF0,Low
+811E55070,Nicholas Costa,Turks and Caicos Islands,811E55070,High
+811F17F10,Stephen Bell,Honduras,811F17F10,Low
+811F20C20,John Shields,Pakistan,811F20C20,Low
+811F62830,Courtney Hayes,South Georgia and the South Sandwich Islands,811F62830,Low
+811F9A5E0,Elizabeth Flores,Zambia,811F9A5E0,Medium
+8120229E0,Glenn Barron,Central African Republic,8120229E0,Medium
+812027210,Kimberly Villanueva,Bermuda,812027210,Medium
+81205F130,William Barry,Romania,81205F130,Low
+812107280,Tommy Martin,Tuvalu,812107280,Low
+81211F1D0,Anthony Rivera,Comoros,81211F1D0,Low
+812130870,Julian Frost,Mauritius,812130870,Medium
+812183900,Douglas Young,Australia,812183900,Medium
+812207D60,Joshua Henry,Austria,812207D60,Low
+81222F4E0,Jeffrey Phillips,Panama,81222F4E0,Low
+81231FBC0,Karen Davis,Costa Rica,81231FBC0,Low
+812384260,Edgar Miller,Tanzania,812384260,Medium
+81239FA90,Richard Ruiz,Ukraine,81239FA90,High
+8124DC080,Anna Stephens,Colombia,8124DC080,Low
+8125759A0,James Lopez,Aruba,8125759A0,Low
+81262CE90,John Perez,Ethiopia,81262CE90,Low
+812689420,Brittany Horton,Bhutan,812689420,Low
+8126AB860,Gregg Weaver,Saudi Arabia,8126AB860,Medium
+812862CC0,Kristen Randall,Svalbard & Jan Mayen Islands,812862CC0,Low
+812904B40,Tracie Mcdaniel,Vietnam,812904B40,Low
+812916C70,Stephen Alvarez,Belgium,812916C70,Medium
+812988840,Scott Johnson,Montserrat,812988840,Low
+8129BF5D0,Rebecca Byrd,Niger,8129BF5D0,Medium
+8129D07C0,Travis Cole,Yemen,8129D07C0,Low
+812A46370,Dr. Rhonda Martinez,Jamaica,812A46370,Low
+812B74E00,Michael Harris,Swaziland,812B74E00,Low
+812BC4720,Sandra Scott,United States Minor Outlying Islands,812BC4720,Low
+812C6EF60,Renee Miller,Moldova,812C6EF60,Low
+812D952A0,Gabriel Hill,Kuwait,812D952A0,Medium
+812E00EF0,Alexandria Graves,Namibia,812E00EF0,Low
+812ECF260,Jennifer Perry,Cameroon,812ECF260,Low
+812EE6570,Lauren Hanna,Bolivia,812EE6570,Medium
+812F7F870,Kristine Garcia,France,812F7F870,Low
+8130A01D0,Sheryl Humphrey,Estonia,8130A01D0,Low
+8130BC370,John Lynch,Argentina,8130BC370,Medium
+8130D4AA0,Jamie Montgomery,Pitcairn Islands,8130D4AA0,Low
+8131210F0,Amanda Preston,Greenland,8131210F0,Low
+813193BB0,Amber Alvarez,Ethiopia,813193BB0,Low
+8131EA170,Alicia Roth,Gabon,8131EA170,Low
+813276180,Ryan Garrison,Poland,813276180,Low
+813290770,Sean Taylor,Samoa,813290770,Medium
+8132E2E80,Roger Adams,Israel,8132E2E80,Medium
+8132E8690,Ann Alexander,United States Minor Outlying Islands,8132E8690,Low
+8132EDFB0,Natalie Malone,Trinidad and Tobago,8132EDFB0,Low
+81342DDF1,Anthony Moody,Bahrain,81342DDF1,Low
+8134855B0,Jonathon Taylor,Thailand,8134855B0,Low
+8134EB2E0,Laura Thompson,Turkey,8134EB2E0,Low
+813549950,Sara Wright,Korea,813549950,Low
+8135617C0,Isaac Gonzalez,Heard Island and McDonald Islands,8135617C0,Low
+8135B2870,Kathy Reid,British Virgin Islands,8135B2870,Low
+8136D7A91,Dana Burns,Kiribati,8136D7A91,Medium
+813748021,Seth Matthews,Guernsey,813748021,Low
+813794911,Ryan Green,Switzerland,813794911,Low
+81379ED10,Dominique Hughes,Central African Republic,81379ED10,Low
+81380CAB0,Penny Lewis,Cyprus,81380CAB0,Low
+81382CFB0,Megan Adams,Ireland,81382CFB0,Low
+8138E9020,Sharon Coffey,Pitcairn Islands,8138E9020,Low
+8139EA1C0,Thomas Holland,Netherlands Antilles,8139EA1C0,High
+813A18A10,Courtney Franklin,Western Sahara,813A18A10,Low
+813A561B0,Walter Day,Jamaica,813A561B0,High
+813B56771,Sarah Stevens,Cuba,813B56771,Low
+813BA8070,Michael Holloway,Indonesia,813BA8070,Low
+813BD3520,Adrienne Key,Tajikistan,813BD3520,Low
+813C0A3B0,Kristina Wheeler,Finland,813C0A3B0,Low
+813CA61C0,Brian Brown,Falkland Islands (Malvinas),813CA61C0,Low
+813CA8220,Shannon Green,Rwanda,813CA8220,Low
+813CB6DF1,Marisa Lopez,Maldives,813CB6DF1,Low
+813CC2C01,Stephanie Trujillo,Spain,813CC2C01,Low
+813DD91A1,Jennifer Flores,Burundi,813DD91A1,Medium
+813DE60E1,Mary Bright,Eritrea,813DE60E1,Low
+813EBEB61,Jennifer Doyle,Myanmar,813EBEB61,Medium
+813F3E2A1,Laura Lee,Saint Kitts and Nevis,813F3E2A1,Low
+813FF74A0,Melissa Little,Lebanon,813FF74A0,Low
+814048C71,Megan Romero,Tanzania,814048C71,Low
+814065D31,Matthew Grant,French Polynesia,814065D31,Low
+814083DC0,Carl Green,Sri Lanka,814083DC0,Low
+8140AEF21,Susan Arroyo,United Arab Emirates,8140AEF21,Low
+8140F94A1,Brandon Kelly,Samoa,8140F94A1,Low
+814198860,Jennifer Eaton,Holy See (Vatican City State),814198860,Medium
+8142137F0,Edward York,Latvia,8142137F0,Low
+8142B4ED1,Mark Carpenter,Niger,8142B4ED1,Medium
+8142F8C71,Steve Mason,Trinidad and Tobago,8142F8C71,Low
+814336BA1,Kendra Gutierrez,Trinidad and Tobago,814336BA1,Low
+8143972E0,Brenda Gonzalez,Ireland,8143972E0,Low
+814498950,Dr. Victoria Thomas,Tokelau,814498950,Low
+8144BFE80,Peggy Freeman,Norfolk Island,8144BFE80,Low
+8145D6080,Mrs. Amy Hayes,Cote d'Ivoire,8145D6080,Low
+81462CE41,Caroline Duran,Liechtenstein,81462CE41,Low
+814660F80,Penny Anderson,Jordan,814660F80,Low
+814699C31,Jennifer Sanford,Hungary,814699C31,Low
+8146EDFD1,Joseph Cross,Zambia,8146EDFD1,Low
+81474DC31,Frank Whitaker,Comoros,81474DC31,Low
+81484CFB0,Aaron Gross,Czech Republic,81484CFB0,High
+8148BC911,Haley Anderson,Hungary,8148BC911,Low
+8148FFBB0,Elizabeth Brown,Aruba,8148FFBB0,Medium
+8149144B1,Earl Luna,Nepal,8149144B1,Medium
