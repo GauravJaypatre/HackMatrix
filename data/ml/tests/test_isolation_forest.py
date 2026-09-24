@@ -60,8 +60,8 @@ class TestIsolationForestPipeline(unittest.TestCase):
         names_off = self.store.get_feature_names(include_experimental_group_x=False)
         names_on = self.store.get_feature_names(include_experimental_group_x=True)
 
-        self.assertEqual(len(names_off), 40, f"Expected 40 features without Group X, got {len(names_off)}")
-        self.assertEqual(len(names_on), 44, f"Expected 44 features with Group X, got {len(names_on)}")
+        self.assertEqual(len(names_off), 39, f"Expected 39 features without Group X, got {len(names_off)}")
+        self.assertEqual(len(names_on), 43, f"Expected 43 features with Group X, got {len(names_on)}")
 
         diff = set(names_on) - set(names_off)
         expected_diff = set(FEATURE_GROUPS["group_x"])

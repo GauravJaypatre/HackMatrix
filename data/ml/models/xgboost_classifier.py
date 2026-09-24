@@ -52,6 +52,7 @@ class XGBoostDetector:
         self.feature_names_: List[str] = []
         self.is_fitted_: bool = False
         self._explainer: Optional[shap.TreeExplainer] = None
+        self.country_mapping_: Dict[str, float] = {}
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "XGBoostDetector":
         """Fit XGBoost classifier on training data."""
@@ -66,8 +67,13 @@ class XGBoostDetector:
 
     def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
         """Return predicted probability of being suspicious (class 1)."""
-        if not self.is_fitted_:
+        if not self.is_fitted_ or self.model is None:
             raise RuntimeError("Detector must be fitted before predict_proba.")
+        if not isinstance(X, pd.DataFrame):
+            raise TypeError("X must be a pandas DataFrame.")
+        missing_features = [f for f in self.feature_names_ if f not in X.columns]
+        if missing_features:
+            raise ValueError(f"Missing required feature columns: {missing_features}")
         probs = self.model.predict_proba(X[self.feature_names_].values)
         return probs[:, 1]
 
@@ -137,6 +143,12 @@ class XGBoostDetector:
         self.model.save_model(str(m_path))
 
         meta_p = Path(metadata_path) if metadata_path else m_path.with_name(f"{m_path.stem}_metadata.json")
+        meta_p.parent.mkdir(parents=True, exist_ok=True)
+
+        country_map = getattr(self, "country_mapping_", None)
+        if not country_map:
+            from data.ml.features.feature_store import FeatureStore
+            country_map = FeatureStore().get_country_map()
 
         metadata = {
             "model_name": "HackMatrix XGBoost Supervised AML Classifier",
@@ -159,6 +171,7 @@ class XGBoostDetector:
             "preprocessing": {
                 "default_threshold": 0.5,
                 "risk_rating_mapping": {"low": 0.0, "medium": 1.0, "high": 2.0},
+                "country_mapping": country_map,
                 "rule_engine_rules": [
                     "INSIDER.PRIVILEGE_CHANGE",
                     "AML.CIRCULAR_TRANSFER",
@@ -226,6 +239,7 @@ class XGBoostDetector:
 
         instance.model.load_model(str(m_path))
         instance.feature_names_ = list(meta.get("feature_names", []))
+        instance.country_mapping_ = meta.get("preprocessing", {}).get("country_mapping", {})
         instance.is_fitted_ = True
         instance._explainer = shap.TreeExplainer(instance.model)
         return instance
@@ -257,12 +271,21 @@ class XGBoostDetector:
         elif isinstance(account_features, pd.Series):
             feat_series = account_features.copy()
         elif isinstance(account_features, pd.DataFrame):
+            if len(account_features) != 1:
+                raise ValueError(f"DataFrame input must contain exactly 1 row, got {len(account_features)}.")
             feat_series = account_features.iloc[0].copy()
         else:
             raise TypeError("account_features must be a dict, pd.Series, or 1-row pd.DataFrame.")
 
+        if feat_series.empty:
+            raise ValueError("account_features cannot be empty.")
+
+        missing_features = [f for f in self.feature_names_ if f not in feat_series.index]
+        if missing_features:
+            raise ValueError(f"Missing required feature columns for inference: {missing_features}")
+
         # Align features to model's exact schema
-        aligned_series = feat_series.reindex(self.feature_names_).fillna(0.0)
+        aligned_series = feat_series[self.feature_names_].astype(float)
         input_df = pd.DataFrame([aligned_series.values], columns=self.feature_names_)
 
         prob = float(self.predict_proba(input_df)[0])

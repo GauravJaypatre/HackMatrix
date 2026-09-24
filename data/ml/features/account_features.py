@@ -22,6 +22,7 @@ LEAKAGE_EXCLUSIONS: Set[str] = {
     "related_transaction_ids",
     "description",
     "has_transactional_consequence",
+    "background_real_laundering_count",
 }
 
 FEATURE_GROUPS: Dict[str, List[str]] = {
@@ -35,7 +36,6 @@ FEATURE_GROUPS: Dict[str, List[str]] = {
         "activity_span_days",
         "txn_density",
         "synthetic_fraction",
-        "background_real_laundering_count",
     ],
     "group_b": [
         "mean_amount",
@@ -129,11 +129,6 @@ def compute_group_a_features(accounts_df: pd.DataFrame) -> pd.DataFrame:
     # Synthetic fraction = synthetic_txn_count / max(1, total_transaction_count)
     denom = np.maximum(features["total_transaction_count"].values, 1.0)
     features["synthetic_fraction"] = features["synthetic_txn_count"].values / denom
-
-    # Permitted for Isolation Forest unsupervised normality modeling
-    features["background_real_laundering_count"] = pd.to_numeric(
-        clean_df.get("background_real_laundering_count", 0.0), errors="coerce"
-    ).fillna(0.0).values
 
     return features
 
@@ -382,10 +377,12 @@ def compute_group_f_features(
     customers_df: pd.DataFrame,
     accounts_df: pd.DataFrame,
     accounts_index: pd.Index,
-) -> pd.DataFrame:
+    country_map: Optional[Dict[str, float]] = None,
+) -> Tuple[pd.DataFrame, Dict[str, float]]:
     """Compute Group F: Customer features (risk_rating, country).
 
     Source: data/entities/customers.csv mapped via accounts.csv linked_customer_id.
+    Accepts an optional persisted country_map for deterministic inference across scoring environments.
     """
     clean_cust = sanitize_input_dataframe(customers_df)
     clean_acc = sanitize_input_dataframe(accounts_df)
@@ -401,16 +398,19 @@ def compute_group_f_features(
     ).set_index("account_id")
 
     risk_map = {"low": 0.0, "medium": 1.0, "high": 2.0}
-    all_countries = sorted(clean_cust["country"].dropna().unique())
-    country_map = {c: float(i + 1) for i, c in enumerate(all_countries)}
+    if country_map is None:
+        all_countries = sorted(clean_cust["country"].dropna().unique())
+        resolved_country_map = {c: float(i + 1) for i, c in enumerate(all_countries)}
+    else:
+        resolved_country_map = dict(country_map)
 
     features = pd.DataFrame(index=accounts_index)
     risk_col = merged["risk_rating"].astype(str).str.lower().map(risk_map).reindex(accounts_index).fillna(0.0)
-    country_col = merged["country"].map(country_map).reindex(accounts_index).fillna(0.0)
+    country_col = merged["country"].map(resolved_country_map).reindex(accounts_index).fillna(0.0)
 
     features["risk_rating_encoded"] = risk_col.values
     features["country_encoded"] = country_col.values
-    return features
+    return features, resolved_country_map
 
 
 def compute_group_g_features(
@@ -456,6 +456,7 @@ def extract_all_features(
     injected_tx_df: pd.DataFrame,
     customers_df: Optional[pd.DataFrame] = None,
     rule_results: Optional[List[Any]] = None,
+    country_map: Optional[Dict[str, float]] = None,
     include_experimental_group_x: bool = False,
     include_group_f: bool = False,
     include_group_g: bool = False,
@@ -475,7 +476,7 @@ def extract_all_features(
     frames = [df_a, df_b, df_c, df_d, df_e]
 
     if include_group_f and customers_df is not None:
-        df_f = compute_group_f_features(customers_df, accounts_df, accounts_idx)
+        df_f, _ = compute_group_f_features(customers_df, accounts_df, accounts_idx, country_map=country_map)
         frames.append(df_f)
 
     if include_group_g and rule_results is not None:
@@ -487,10 +488,6 @@ def extract_all_features(
         frames.append(df_x)
 
     feature_matrix = pd.concat(frames, axis=1)
-
-    # For XGBoost: exclude background_real_laundering_count per design
-    if for_xgboost and "background_real_laundering_count" in feature_matrix.columns:
-        feature_matrix = feature_matrix.drop(columns=["background_real_laundering_count"])
 
     # Double check no leakage columns exist
     leakage_present = set(feature_matrix.columns).intersection(LEAKAGE_EXCLUSIONS)

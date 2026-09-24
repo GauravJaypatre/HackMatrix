@@ -6,7 +6,7 @@ comparison after the Rule Engine has evaluated runtime transaction and HR data.
 
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, Iterable, List, Mapping, Sequence, Set, Tuple
+from typing import Dict, Iterable, List, Mapping, Optional, Sequence, Set, Tuple
 
 import pandas as pd
 
@@ -34,13 +34,14 @@ def _split_ids(value: str) -> List[str]:
     return [item.strip() for item in str(value or "").replace(";", ",").split(",") if item.strip()]
 
 
-def load_runtime_context() -> Dict[str, List[Dict[str, str]]]:
+def load_runtime_context(data_dir: Optional[Path] = None) -> Dict[str, List[Dict[str, str]]]:
     """Load runtime data without loading ground-truth scenario labels."""
+    hr_dir = (Path(data_dir) / "synthetic_hr") if data_dir else HR_DIR
     context = {
-        "access_events": _load_records(HR_DIR / "access_events.csv"),
-        "profile_changes": _load_records(HR_DIR / "profile_changes.csv"),
-        "employees": _load_records(HR_DIR / "employees.csv"),
-        "injected_transactions": _load_records(HR_DIR / "injected_transactions.csv"),
+        "access_events": _load_records(hr_dir / "access_events.csv"),
+        "profile_changes": _load_records(hr_dir / "profile_changes.csv"),
+        "employees": _load_records(hr_dir / "employees.csv"),
+        "injected_transactions": _load_records(hr_dir / "injected_transactions.csv"),
     }
     # Scenario ground truth is represented by injected_transactions.csv. The
     # real transaction ledger is intentionally excluded here because the

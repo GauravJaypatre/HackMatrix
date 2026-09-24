@@ -172,6 +172,56 @@ class TestXGBoostPipeline(unittest.TestCase):
             self.assertEqual(res_s19["rule_result"].rule_id, "ML.XGBOOST")
             self.assertGreater(len(res_s19["top_shap_features"]), 0)
 
+            # Verify persisted country map in reloaded model
+            self.assertGreater(len(reloaded.country_mapping_), 0)
+
+    def test_save_nested_metadata_directory_creation(self):
+        """Verify model and metadata can be saved to separate, previously non-existent nested directories."""
+        import tempfile
+        from pathlib import Path
+
+        X, y, _ = self.store.get_xgboost_dataset(include_group_g=False, include_experimental_group_x=False)
+        model = XGBoostDetector(n_estimators=10, random_state=42).fit(X, y)
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            model_file = Path(tmp_dir) / "nested_models" / "xgb.json"
+            meta_file = Path(tmp_dir) / "different_nested" / "meta" / "xgb_metadata.json"
+
+            model_path, meta_path = model.save_model(str(model_file), str(meta_file))
+            self.assertTrue(Path(model_path).exists())
+            self.assertTrue(Path(meta_path).exists())
+
+    def test_predict_account_input_validation(self):
+        """Verify strict input validation on single-account inference."""
+        X, y, _ = self.store.get_xgboost_dataset(include_group_g=False, include_experimental_group_x=False)
+        detector = XGBoostDetector(n_estimators=10, random_state=42).fit(X, y)
+
+        # Multi-row DataFrame should raise ValueError
+        with self.assertRaises(ValueError):
+            detector.predict_account(X.iloc[0:2])
+
+        # Empty dict should raise ValueError
+        with self.assertRaises(ValueError):
+            detector.predict_account({})
+
+        # Missing required feature columns should raise ValueError
+        with self.assertRaises(ValueError):
+            detector.predict_account({"feature_1": 1.0})
+
+        # Non-supported type should raise TypeError
+        with self.assertRaises(TypeError):
+            detector.predict_account([1.0, 2.0, 3.0])
+
+    def test_invalid_scenario_type_rejection(self):
+        """Verify get_labeled_scenarios rejects invalid scenario types instead of silently mapping to 0."""
+        from unittest.mock import patch
+        bad_df = self.store._labeled_scenarios_df.copy()
+        bad_df.loc[0, "scenario_type"] = "unknown_typo"
+
+        with patch.object(self.store, "_labeled_scenarios_df", bad_df):
+            with self.assertRaises(ValueError):
+                self.store.get_labeled_scenarios()
+
 
 if __name__ == "__main__":
     unittest.main()

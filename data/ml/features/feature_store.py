@@ -32,6 +32,7 @@ class FeatureStore:
         self._injected_tx_df: Optional[pd.DataFrame] = None
         self._labeled_scenarios_df: Optional[pd.DataFrame] = None
         self._rule_results: Optional[List[Any]] = None
+        self._country_map: Optional[Dict[str, float]] = None
 
         self._cached_feature_matrix: Dict[Tuple[bool, bool, bool, bool], pd.DataFrame] = {}
 
@@ -67,11 +68,21 @@ class FeatureStore:
             dtype=str,
         )
 
+    def get_country_map(self) -> Dict[str, float]:
+        """Return the cached or computed country encoding map."""
+        if self._country_map is None:
+            if self._customers_df is None:
+                self.load_raw_data()
+            clean_cust = self._customers_df.dropna(subset=["country"])
+            all_countries = sorted(clean_cust["country"].unique())
+            self._country_map = {c: float(i + 1) for i, c in enumerate(all_countries)}
+        return dict(self._country_map)
+
     def get_rule_results(self) -> List[Any]:
         """Run or return cached deterministic RuleEngine results."""
         if self._rule_results is None:
             engine = build_engine()
-            context = load_runtime_context()
+            context = load_runtime_context(self.data_dir)
             cfg = load_rule_configuration()
             outcome = engine.run(context, cfg)
             self._rule_results = outcome.results
@@ -93,6 +104,7 @@ class FeatureStore:
             self.load_raw_data()
 
         rule_results = self.get_rule_results() if include_group_g else None
+        country_map = self.get_country_map() if include_group_f else None
 
         matrix = extract_all_features(
             accounts_df=self._accounts_df,
@@ -103,6 +115,7 @@ class FeatureStore:
             injected_tx_df=self._injected_tx_df,
             customers_df=self._customers_df,
             rule_results=rule_results,
+            country_map=country_map,
             include_experimental_group_x=include_experimental_group_x,
             include_group_f=include_group_f,
             include_group_g=include_group_g,
@@ -144,7 +157,10 @@ class FeatureStore:
         df = self._labeled_scenarios_df.copy()
         # Each scenario maps to its primary account ID (19 suspicious S01-S19 + 19 legitimate L01-L19)
         df["primary_account_id"] = df["account_id"].apply(lambda x: str(x).split(";")[0].strip())
-        df["label"] = df["scenario_type"].apply(lambda t: 1 if str(t).lower() == "suspicious" else 0)
+        scenario_types = df["scenario_type"].astype(str).str.lower()
+        if not scenario_types.isin({"suspicious", "legitimate"}).all():
+            raise ValueError("scenario_type must be 'suspicious' or 'legitimate'")
+        df["label"] = scenario_types.eq("suspicious").astype(int)
         return df
 
     def get_dataset_splits(
