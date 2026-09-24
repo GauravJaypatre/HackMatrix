@@ -1,5 +1,16 @@
 {
   "rules": {
+    "AML.CIRCULAR_TRANSFER": {
+      "enabled": true,
+      "time_window_hours": 48,
+      "minimum_transactions": 3
+    },
+    "AML.TRANSACTION_SPLITTING": {
+      "enabled": true,
+      "time_window_hours": 48,
+      "minimum_outgoing_transactions": 3,
+      "below_reporting_boundary": 10000
+    },
     "INSIDER.PRIVILEGE_CHANGE": {
       "enabled": true,
       "qualifying_administrative_categories": [
