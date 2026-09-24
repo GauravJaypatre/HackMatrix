@@ -1,7 +1,7 @@
 """LOSO cross-validation and evaluation pipeline for XGBoost AML classifier."""
 
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
 from sklearn.metrics import (
