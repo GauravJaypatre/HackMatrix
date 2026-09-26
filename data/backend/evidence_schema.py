@@ -543,10 +543,7 @@ def build_evidence_object(
             "isolation_forest": comps.get("isolation_forest", {})
         }
     except Exception as e:
-        risk_score = 0.0
-        risk_tier = "Low"
-        rule_engine_signal = {"triggered": False, "fired_rules": [], "error": str(e)}
-        ml_model_signal = {"xgboost": {}, "isolation_forest": {}}
+        raise RuntimeError(f"Risk fusion failed for account {acc_id}: {e}") from e
 
     # 8. Compose Explainable Evidence Narrative
     explanation_parts = [

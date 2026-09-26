@@ -119,7 +119,7 @@ class RiskFusionEngine:
         
         # XGBoost features (10 un-leaked signal features from groups A, B, C, D)
         matrix_xgb = self.feature_store.get_feature_matrix(
-            include_experimental_group_x=False,
+            include_experimental_group_x=True,
             include_group_f=True,
             include_group_g=False,
             for_xgboost=True,

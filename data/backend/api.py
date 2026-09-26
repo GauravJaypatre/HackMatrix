@@ -213,9 +213,8 @@ def create_case(req: CreateCaseRequest) -> Dict[str, Any]:
         evidence = build_evidence_object(acc_id)
         risk_tier = evidence.get("risk_tier", "Unknown")
         risk_score = evidence.get("risk_score", 0.0)
-    except Exception:
-        risk_tier = "Unknown"
-        risk_score = 0.0
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to calculate live risk for account {acc_id}: {e}") from e
         
     now = datetime.now(timezone.utc).isoformat()
     
