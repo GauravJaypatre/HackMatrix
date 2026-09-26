@@ -20,12 +20,22 @@ Target Schema:
   "timeline": [],
   "explanation": str
 }
+
+Key Implementation Details:
+- Prefixes node IDs by entity type in evidence_subgraph:
+  "ACCT_<id>" for Account nodes, "CUST_<id>" for Customer nodes (eliminating
+  the 1:1 ID string collision present in data/graph/nodes.csv), with "raw_id"
+  preserved for database lookups.
+- Connects all cycle and scenario transactions (including intermediate hops
+  such as SYN_S19_002) in both evidence_subgraph and timeline.
+- Timeline includes chronological scenario events labeled with category
+  ("scenario_evidence" vs optional "background_context").
 """
 
 import sys
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Set
 import networkx as nx
 import pandas as pd
 
@@ -64,23 +74,29 @@ def _load_graph_data():
     clusters_path = INTEL_DIR / "account_clusters.csv"
     nodes_path = GRAPH_DIR / "nodes.csv"
     edges_path = GRAPH_DIR / "edges.csv"
+    inj_path = HR_DIR / "injected_transactions.csv"
 
     scores_df = pd.read_csv(scores_path) if scores_path.exists() else pd.DataFrame()
     struct_df = pd.read_csv(struct_path) if struct_path.exists() else pd.DataFrame()
     clusters_df = pd.read_csv(clusters_path) if clusters_path.exists() else pd.DataFrame()
     nodes_df = pd.read_csv(nodes_path) if nodes_path.exists() else pd.DataFrame()
     edges_df = pd.read_csv(edges_path) if edges_path.exists() else pd.DataFrame()
+    inj_df = pd.read_csv(inj_path) if inj_path.exists() else pd.DataFrame()
 
     return {
         "scores": scores_df,
         "struct": struct_df,
         "clusters": clusters_df,
         "nodes": nodes_df,
-        "edges": edges_df
+        "edges": edges_df,
+        "injected_txns": inj_df
     }
 
 
-def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
+def build_partial_evidence_object(
+    account_id: str,
+    include_background_context: bool = False
+) -> Dict[str, Any]:
     """
     Constructs a partially-filled alert evidence object for the specified account.
     
@@ -89,8 +105,9 @@ def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
     - account_ids: List of linked accounts in the suspicious flow/cycle
     - employee_id: Connected employee ID from get_account_history
     - signals.graph_intelligence: Full topological metrics, anomaly score, and factors
-    - evidence_subgraph: Local investigation subgraph (nodes and edges)
-    - timeline: Chronological timeline of access, profile, and transactional events
+    - evidence_subgraph: Local investigation subgraph with typed, collision-free node IDs
+      ("ACCT_<id>", "CUST_<id>", "EMP_<id>", "SYN_<id>")
+    - timeline: Chronological timeline of scenario evidence events (and optional background context)
     - explanation: Human-readable narrative explaining graph intelligence findings
     
     Leaves placeholders:
@@ -153,13 +170,15 @@ def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
         "clustering_metrics": clust_dict
     }
     
-    # 4. Determine involved account_ids (primary + circular counterparties + scenario payees)
+    # 4. Determine involved account_ids and cycle transaction IDs
     involved_accounts = [acc_id]
     edges_df = graph_data["edges"]
     nodes_df = graph_data["nodes"]
+    inj_df = graph_data["injected_txns"]
     
-    # If participating in a cycle, find the cycle counterparties directly
-    synth_tx_ids = set()
+    synth_tx_ids: Set[str] = set()
+    
+    # If participating in a cycle, find all cycle counterparties and cycle transactions
     if struct_dict.get("is_on_any_cycle"):
         sent_edges = edges_df[edges_df["edge_type"] == "SENT_TO"]
         G_sent = nx.DiGraph()
@@ -189,52 +208,91 @@ def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
                             pass
                 break
                 
-    # Add any counterparties from synthetic scenario transactions
-    synth_txns = [t for t in history.get("transactions", []) if t.get("is_synthetic")]
-    for tx in synth_txns:
-        fa = str(tx.get("from_account", ""))
-        ta = str(tx.get("to_account", ""))
-        tx_id = str(tx.get("transaction_id", ""))
-        if fa and fa not in involved_accounts:
-            involved_accounts.append(fa)
-        if ta and ta not in involved_accounts:
-            involved_accounts.append(ta)
-        if tx_id:
-            synth_tx_ids.add(tx_id)
-            
-    # 5. Build Evidence Subgraph
-    # Subgraph nodes: involved accounts, linked customer, employee, and scenario transactions
-    sub_node_ids = set(involved_accounts) | synth_tx_ids
-    if employee_id:
-        sub_node_ids.add(employee_id)
-    cust = history.get("customer")
-    if cust and cust.get("customer_id"):
-        sub_node_ids.add(str(cust["customer_id"]))
-            
-    # Extract node metadata from nodes.csv
-    sub_nodes = []
-    if not nodes_df.empty:
-        matched_nodes = nodes_df[nodes_df["node_id"].astype(str).isin(sub_node_ids)]
-        seen_keys = set()
-        for _, nr in matched_nodes.iterrows():
-            key = (str(nr["node_type"]), str(nr["node_id"]))
-            if key not in seen_keys:
-                seen_keys.add(key)
-                sub_nodes.append({
-                    "id": str(nr["node_id"]),
-                    "type": str(nr["node_type"]),
-                    "label": str(nr["label"])
-                })
+    # Also add transactions from history
+    for tx in history.get("transactions", []):
+        if tx.get("is_synthetic"):
+            t_id = str(tx.get("transaction_id", ""))
+            if t_id:
+                synth_tx_ids.add(t_id)
+            fa = str(tx.get("from_account", ""))
+            ta = str(tx.get("to_account", ""))
+            if fa and fa not in involved_accounts:
+                involved_accounts.append(fa)
+            if ta and ta not in involved_accounts:
+                involved_accounts.append(ta)
                 
-    # Extract connecting edges from edges.csv
-    # Include: CHANGED_ACCESS, MANAGES, OWNS, INVOLVED_IN (for scenario txns),
-    # and SENT_TO edges between involved accounts
+    # 5. Build Evidence Subgraph with Typed, Collision-Free Node IDs
+    # Prefixes:
+    # "ACCT_<id>" for Account nodes
+    # "CUST_<id>" for Customer nodes
+    # "EMP_<id>"  for Employee nodes
+    # "SYN_<id>" / "TXN_<id>" for Transaction nodes
+    
+    sub_nodes = []
+    
+    # 5a. Account nodes
+    for a_id in involved_accounts:
+        acc_label = f"Account {a_id}"
+        if not nodes_df.empty:
+            match = nodes_df[(nodes_df["node_id"].astype(str) == a_id) & (nodes_df["node_type"] == "Account")]
+            if not match.empty:
+                acc_label = str(match.iloc[0]["label"])
+        sub_nodes.append({
+            "id": f"ACCT_{a_id}",
+            "type": "Account",
+            "label": acc_label,
+            "raw_id": a_id
+        })
+        
+    # 5b. Customer nodes
+    for a_id in involved_accounts:
+        cust_match = nodes_df[(nodes_df["node_id"].astype(str) == a_id) & (nodes_df["node_type"] == "Customer")] if not nodes_df.empty else pd.DataFrame()
+        if not cust_match.empty:
+            sub_nodes.append({
+                "id": f"CUST_{a_id}",
+                "type": "Customer",
+                "label": str(cust_match.iloc[0]["label"]),
+                "raw_id": a_id
+            })
+            
+    # 5c. Employee node
+    if employee_id:
+        emp_label = f"Employee {employee_id}"
+        if not nodes_df.empty:
+            match = nodes_df[nodes_df["node_id"].astype(str) == employee_id]
+            if not match.empty:
+                emp_label = str(match.iloc[0]["label"])
+        sub_nodes.append({
+            "id": employee_id,
+            "type": "Employee",
+            "label": emp_label,
+            "raw_id": employee_id
+        })
+        
+    # 5d. Transaction nodes
+    for tx_id in sorted(synth_tx_ids):
+        tx_label = f"Transaction {tx_id}"
+        if not nodes_df.empty:
+            match = nodes_df[nodes_df["node_id"].astype(str) == tx_id]
+            if not match.empty:
+                tx_label = str(match.iloc[0]["label"])
+        sub_nodes.append({
+            "id": tx_id,
+            "type": "Transaction",
+            "label": tx_label,
+            "raw_id": tx_id
+        })
+
+    # 5e. Subgraph Edges with Prefixed Source/Target Remapping
+    raw_node_ids = set(involved_accounts) | {employee_id} | synth_tx_ids
     sub_edges = []
+    
     if not edges_df.empty:
         matched_edges = edges_df[
-            edges_df["source_id"].astype(str).isin(sub_node_ids) &
-            edges_df["target_id"].astype(str).isin(sub_node_ids)
+            edges_df["source_id"].astype(str).isin(raw_node_ids) &
+            edges_df["target_id"].astype(str).isin(raw_node_ids)
         ]
+        
         for _, er in matched_edges.iterrows():
             etype = str(er["edge_type"])
             src = str(er["source_id"])
@@ -246,29 +304,51 @@ def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
             except Exception:
                 meta = {"raw": str(meta_raw)}
                 
-            # For SENT_TO, keep synthetic/scenario transactions and inter-account cycle links
-            if etype == "SENT_TO":
+            # Determine mapped source and target IDs
+            if etype == "OWNS":
+                # Customer -> Account
+                mapped_src = f"CUST_{src}"
+                mapped_tgt = f"ACCT_{tgt}"
+            elif etype == "MANAGES":
+                # Employee -> Customer
+                mapped_src = src
+                mapped_tgt = f"CUST_{tgt}"
+            elif etype == "CHANGED_ACCESS":
+                # Employee -> Account
+                mapped_src = src
+                mapped_tgt = f"ACCT_{tgt}"
+            elif etype == "EDITED_PROFILE":
+                # Employee -> Customer
+                mapped_src = src
+                mapped_tgt = f"CUST_{tgt}"
+            elif etype == "SENT_TO":
+                # Account -> Account
+                mapped_src = f"ACCT_{src}"
+                mapped_tgt = f"ACCT_{tgt}"
                 is_synth = meta.get("is_synthetic", False)
-                # Keep synthetic edges or edges between distinct cycle accounts
                 if not is_synth and src == tgt:
                     continue  # skip self-transfers
                 if not is_synth and not (src in involved_accounts and tgt in involved_accounts):
                     continue
-                    
-            # For INVOLVED_IN, keep if related to scenario transactions
-            if etype == "INVOLVED_IN":
+            elif etype == "INVOLVED_IN":
+                # Account -> Transaction
+                mapped_src = f"ACCT_{src}"
+                mapped_tgt = tgt
                 if tgt not in synth_tx_ids and src not in synth_tx_ids:
                     continue
-                    
+            else:
+                mapped_src = src
+                mapped_tgt = tgt
+                
             sub_edges.append({
-                "source": src,
-                "target": tgt,
+                "source": mapped_src,
+                "target": mapped_tgt,
                 "type": etype,
                 "timestamp": ts,
                 "metadata": meta
             })
             
-    # Deduplicate edges by (source, target, type, transaction_id if any)
+    # Deduplicate edges
     unique_sub_edges = []
     seen_edge_signatures = set()
     for e in sub_edges:
@@ -283,40 +363,106 @@ def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
         "edges": unique_sub_edges
     }
     
-    # 6. Build Chronological Timeline
+    # 6. Build Clean, Chronological Timeline
+    # Pull all relevant transactions for the scenario / cycle (including intermediate hops)
     timeline = []
     
-    # Access events
+    # Access events genuinely tied to scenario or connected employee
     for ev in history.get("access_events", []):
-        timeline.append({
-            "timestamp": str(ev.get("timestamp")),
-            "event_type": "access_event",
-            "summary": f"Access modification by {ev.get('employee_id')}: {ev.get('action')} ({ev.get('old_value')} -> {ev.get('new_value')})",
-            "details": ev
-        })
+        ev_emp = str(ev.get("employee_id", ""))
+        is_scenario_tied = (ev_emp == employee_id) or bool(ev.get("scenario_id"))
         
-    # Profile changes
+        if is_scenario_tied:
+            timeline.append({
+                "timestamp": str(ev.get("timestamp")),
+                "event_type": "access_event",
+                "category": "scenario_evidence",
+                "summary": f"Access modification by {ev_emp}: {ev.get('action')} ({ev.get('old_value')} -> {ev.get('new_value')})",
+                "details": ev
+            })
+        elif include_background_context:
+            timeline.append({
+                "timestamp": str(ev.get("timestamp")),
+                "event_type": "access_event",
+                "category": "background_context",
+                "summary": f"[Background] Access event by {ev_emp}: {ev.get('action')}",
+                "details": ev
+            })
+
+    # Profile changes: filter to employee_id or scenario, or tag as background_context
     for pr in history.get("profile_changes", []):
-        timeline.append({
-            "timestamp": str(pr.get("timestamp")),
-            "event_type": "profile_change",
-            "summary": f"Customer profile change by employee {pr.get('changed_by_employee_id')}: {pr.get('field_changed')} ({pr.get('old_value')} -> {pr.get('new_value')})",
-            "details": pr
-        })
+        pr_emp = str(pr.get("changed_by_employee_id", ""))
+        is_scenario_tied = (pr_emp == employee_id)
         
-    # Synthetic / Scenario Transactions
-    for tx in synth_txns:
-        amt = tx.get("amount_paid", 0.0)
-        curr = tx.get("payment_currency", "USD")
-        fmt = tx.get("payment_format", "Transfer")
-        timeline.append({
-            "timestamp": str(tx.get("timestamp")),
-            "event_type": "transaction",
-            "summary": f"Scenario transaction {tx.get('transaction_id')}: {tx.get('from_account')} -> {tx.get('to_account')} ({amt:,.2f} {curr} via {fmt})",
-            "details": tx
-        })
-        
-    # Sort timeline chronologically
+        if is_scenario_tied:
+            timeline.append({
+                "timestamp": str(pr.get("timestamp")),
+                "event_type": "profile_change",
+                "category": "scenario_evidence",
+                "summary": f"Customer profile change by employee {pr_emp}: {pr.get('field_changed')} ({pr.get('old_value')} -> {pr.get('new_value')})",
+                "details": pr
+            })
+        elif include_background_context:
+            timeline.append({
+                "timestamp": str(pr.get("timestamp")),
+                "event_type": "profile_change",
+                "category": "background_context",
+                "summary": f"[Background] Customer profile change by employee {pr_emp}: {pr.get('field_changed')}",
+                "details": pr
+            })
+
+    # All transactions in synth_tx_ids (ensures all 3 hops appear in timeline)
+    # Check both history transactions and injected_transactions.csv
+    seen_tx_ids = set()
+    
+    # Check injected transactions table for full metadata across all involved accounts
+    if not inj_df.empty:
+        matched_txs = inj_df[inj_df["transaction_id"].astype(str).isin(synth_tx_ids)]
+        for _, tx_row in matched_txs.iterrows():
+            t_id = str(tx_row["transaction_id"])
+            seen_tx_ids.add(t_id)
+            amt = float(tx_row.get("amount_paid", 0.0))
+            curr = str(tx_row.get("payment_currency", "USD"))
+            fmt = str(tx_row.get("payment_format", "Transfer"))
+            fa = str(tx_row.get("from_account", ""))
+            ta = str(tx_row.get("to_account", ""))
+            ts = str(tx_row.get("timestamp", ""))
+            
+            timeline.append({
+                "timestamp": ts,
+                "event_type": "transaction",
+                "category": "scenario_evidence",
+                "summary": f"Scenario transaction {t_id}: {fa} -> {ta} ({amt:,.2f} {curr} via {fmt})",
+                "details": {
+                    "transaction_id": t_id,
+                    "timestamp": ts,
+                    "from_account": fa,
+                    "to_account": ta,
+                    "amount_paid": amt,
+                    "payment_currency": curr,
+                    "payment_format": fmt,
+                    "is_synthetic": True,
+                    "is_laundering": int(tx_row.get("is_laundering", 1))
+                }
+            })
+            
+    # Also check if any remaining in history transactions
+    for tx in history.get("transactions", []):
+        t_id = str(tx.get("transaction_id", ""))
+        if tx.get("is_synthetic") and t_id in synth_tx_ids and t_id not in seen_tx_ids:
+            seen_tx_ids.add(t_id)
+            amt = float(tx.get("amount_paid", 0.0))
+            curr = str(tx.get("payment_currency", "USD"))
+            fmt = str(tx.get("payment_format", "Transfer"))
+            timeline.append({
+                "timestamp": str(tx.get("timestamp")),
+                "event_type": "transaction",
+                "category": "scenario_evidence",
+                "summary": f"Scenario transaction {t_id}: {tx.get('from_account')} -> {tx.get('to_account')} ({amt:,.2f} {curr} via {fmt})",
+                "details": tx
+            })
+            
+    # Sort timeline strictly chronologically
     timeline.sort(key=lambda x: str(x.get("timestamp", "")))
     
     # 7. Compose Explainable Evidence Narrative
@@ -335,9 +481,9 @@ def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
         explanation_parts.append(
             f"Corroborating insider context: Linked to employee {employee_id} via internal access administration records."
         )
-    if synth_txns:
+    if synth_tx_ids:
         explanation_parts.append(
-            f"Detected {len(synth_txns)} high-priority scenario transactions in close temporal proximity."
+            f"Detected {len(synth_tx_ids)} high-priority scenario transactions in close temporal proximity."
         )
         
     explanation = " ".join(explanation_parts)
@@ -363,7 +509,7 @@ def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
 
 
 def demonstrate_s19_evidence():
-    """Build and display the partial evidence object for scenario S19."""
+    """Build and display the corrected partial evidence object for scenario S19."""
     s19_account_id = "800085BF0"
     print("=" * 80)
     print(f"BUILDING PARTIAL EVIDENCE OBJECT FOR S19 ACCOUNT: {s19_account_id}")
@@ -383,12 +529,30 @@ def demonstrate_s19_evidence():
     assert evidence["signals"]["ml_model"] == {}, "ml_model should be empty placeholder"
     assert "graph_intelligence" in evidence["signals"], "graph_intelligence signal missing"
     assert evidence["signals"]["graph_intelligence"]["graph_anomaly_score"] > 0.5, "Expected high anomaly score for S19"
-    assert len(evidence["evidence_subgraph"]["nodes"]) > 0, "Subgraph nodes empty"
-    assert len(evidence["evidence_subgraph"]["edges"]) > 0, "Subgraph edges empty"
-    assert len(evidence["timeline"]) > 0, "Timeline empty"
     
+    # 1. Collision verification
+    node_ids = [n["id"] for n in evidence["evidence_subgraph"]["nodes"]]
+    assert len(node_ids) == len(set(node_ids)), "Duplicate node IDs detected in evidence_subgraph!"
+    assert "ACCT_800085BF0" in node_ids, "Missing ACCT_800085BF0"
+    assert "CUST_800085BF0" in node_ids, "Missing CUST_800085BF0"
+    
+    # 2. Timeline transactions check: all 3 hops must appear
+    tl_tx_ids = [
+        item["details"]["transaction_id"]
+        for item in evidence["timeline"]
+        if item["event_type"] == "transaction"
+    ]
+    assert "SYN_S19_001" in tl_tx_ids, "Missing SYN_S19_001 from timeline"
+    assert "SYN_S19_002" in tl_tx_ids, "Missing SYN_S19_002 from timeline"
+    assert "SYN_S19_003" in tl_tx_ids, "Missing SYN_S19_003 from timeline"
+    
+    # 3. Noise check: no unrelated EMP_0199 profile changes
+    for item in evidence["timeline"]:
+        if item["event_type"] == "profile_change":
+            assert item["details"].get("changed_by_employee_id") == "EMP_0047", "Unrelated profile change in evidence timeline"
+            
     print("\n" + "=" * 80)
-    print("S19 PARTIAL EVIDENCE OBJECT VALIDATION: ALL CHECKS PASSED ✅")
+    print("S19 PARTIAL EVIDENCE OBJECT VALIDATION: ALL THREE FIXES VERIFIED ✅")
     print("=" * 80)
     return evidence
 
