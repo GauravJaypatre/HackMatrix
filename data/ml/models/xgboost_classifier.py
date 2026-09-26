@@ -460,6 +460,14 @@ def train_and_save_final_model(
         },
     }
     saved_model, saved_meta = clf.save_model(model_path, meta_path, extra_metadata=extra_meta)
+
+    # Mirror artifacts to data/models/ for Member 3 convenience
+    import shutil
+    data_models_dir = fs.data_dir / "models"
+    data_models_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(saved_model, str(data_models_dir / "xgboost_v1.json"))
+    shutil.copyfile(saved_meta, str(data_models_dir / "xgboost_v1_metadata.json"))
+
     return saved_model, saved_meta, clf
 
 
@@ -467,11 +475,19 @@ def load_xgboost_model(
     artifacts_dir: Optional[Any] = None,
     version: str = "v1",
 ) -> XGBoostDetector:
-    """Load a versioned XGBoost model from the artifacts directory."""
+    """Load a versioned XGBoost model from the artifacts directory or data/models."""
     from pathlib import Path
 
     base_dir = Path(__file__).resolve().parent
-    art_dir = Path(artifacts_dir) if artifacts_dir else base_dir / "artifacts"
+    if artifacts_dir:
+        art_dir = Path(artifacts_dir)
+    else:
+        # Check standard data/models/ first, fallback to data/ml/models/artifacts/
+        data_models = base_dir.parents[1] / "models"
+        if (data_models / f"xgboost_{version}.json").exists():
+            art_dir = data_models
+        else:
+            art_dir = base_dir / "artifacts"
 
     model_path = art_dir / f"xgboost_{version}.json"
     meta_path = art_dir / f"xgboost_{version}_metadata.json"
