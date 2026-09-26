@@ -137,6 +137,22 @@ python data/validate_joins.py
 
 All generators use fixed random seeds for full reproducibility.
 
+### XGBoost Model Contract for Member 3
+
+The persisted `data/ml/models/artifacts/xgboost_v1.json` model is the single selected XGBoost model for risk fusion. Its metadata file is the source of truth for the feature list and cutoff: flag an account when `suspicious_probability >= 0.5`; the raw probability may also be consumed directly by the fusion formula.
+
+The historical **Baseline** used 41 Group A-F features. **Approved** added the three Group G deterministic rule flags (privilege change, circular transfer, transaction splitting), for 44 features; the two versions existed as an ablation to measure whether feeding rule outputs back into ML helped. They are comparison-only, not separate deployment artifacts. The selected model uses 10 signal-linked features from Groups A, B, D, and X. It excludes Group G so Member 3 can fuse ML output with those rule detections independently. Group X aggregates the scenario transaction records after dropping `scenario_id`, `source`, and `is_laundering`; these are observed activity summaries, not label fields. Evaluation uses only 38 labeled accounts, so the reported LOSO metrics remain exploratory and are not reliable evidence of generalization.
+
+LOSO comparison (38 folds; binary predictions use suspicious probability `>= 0.50`):
+
+| Feature set | Features | ROC-AUC | Precision @ 0.50 | Recall @ 0.50 | F1 @ 0.50 | S19/L19 LOSO scores | S19/L19 fixed holdout scores |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Baseline | 41 | 0.7895 | 0.6364 | 0.7368 | 0.6829 | 0.5177 / 0.1300 | 0.5130 / 0.0918 |
+| Approved | 44 | 0.8116 | 0.6364 | 0.7368 | 0.6829 | 0.6087 / 0.1097 | 0.6324 / 0.0934 |
+| Selected signal-focused | 10 | 0.8227 | 0.7059 | 0.6316 | 0.6667 | 0.6981 / 0.4157 | 0.6874 / 0.4136 |
+
+The selected model improves ROC-AUC and precision over both historical sets, while its thresholded F1 is slightly lower than theirs. S19 is flagged and L19 is not at the 0.50 cutoff in both LOSO and fixed holdout evaluation; these two examples and the small evaluation sample do not establish generalization.
+
 ---
 
 ## Graph Schema for Detection & Backend Teams

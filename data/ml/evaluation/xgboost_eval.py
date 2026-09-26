@@ -12,8 +12,10 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 
-from data.ml.features.feature_store import FeatureStore
+from data.ml.features.feature_store import FeatureStore, XGBOOST_SIGNAL_FEATURES
 from data.ml.models.xgboost_classifier import XGBoostDetector
+
+DEFAULT_DECISION_THRESHOLD = 0.5
 
 
 @dataclass
@@ -23,6 +25,7 @@ class XGBoostExperimentResult:
     name: str
     group_g_included: bool
     group_x_included: bool
+    decision_threshold: float
     feature_count: int
     feature_names: List[str]
     roc_auc_mean: float
@@ -66,14 +69,19 @@ def evaluate_loso_xgboost(
     include_experimental_group_x: bool = False,
     feature_store: Optional[FeatureStore] = None,
     name: Optional[str] = None,
+    feature_names: Optional[List[str]] = None,
+    decision_threshold: float = DEFAULT_DECISION_THRESHOLD,
 ) -> XGBoostExperimentResult:
     """Run full Leave-One-Scenario-Out cross-validation across all 38 labeled accounts."""
+    if not 0.0 <= decision_threshold <= 1.0:
+        raise ValueError("decision_threshold must be between 0.0 and 1.0")
     if feature_store is None:
         feature_store = FeatureStore()
 
     X_labeled, y_labeled, scenario_meta = feature_store.get_xgboost_dataset(
         include_group_g=include_group_g,
         include_experimental_group_x=include_experimental_group_x,
+        feature_names=feature_names,
     )
 
     exp_name = name or (
@@ -104,7 +112,7 @@ def evaluate_loso_xgboost(
         clf.fit(X_labeled.iloc[train_idx], y_labeled.iloc[train_idx])
         prob = clf.predict_proba(X_labeled.iloc[test_idx])[0]
         oof_probs[i] = prob
-        oof_preds[i] = 1 if prob >= 0.5 else 0
+        oof_preds[i] = 1 if prob >= decision_threshold else 0
 
     # Primary OOF pooled point estimates
     auc_val = float(roc_auc_score(y, oof_probs))
@@ -181,6 +189,7 @@ def evaluate_loso_xgboost(
         name=exp_name,
         group_g_included=include_group_g,
         group_x_included=include_experimental_group_x,
+        decision_threshold=decision_threshold,
         feature_count=X_labeled.shape[1],
         feature_names=list(X_labeled.columns),
         roc_auc_mean=float(round(auc_val, 4)),
@@ -201,13 +210,12 @@ def evaluate_loso_xgboost(
 
 
 def run_all_xgboost_experiments() -> List[XGBoostExperimentResult]:
-    """Execute all 4 mandatory XGBoost experiments with full ablation comparison."""
+    """Compare historical feature ablations with the selected signal-focused model."""
     fs = FeatureStore()
     experiments = [
-        ("1. Rule Engine Flags OFF | Group X OFF", False, False),
-        ("2. Rule Engine Flags ON  | Group X OFF", True, False),
-        ("3. Rule Engine Flags OFF | Group X ON ", False, True),
-        ("4. Rule Engine Flags ON  | Group X ON ", True, True),
+        ("Historical Baseline (41 features)", False, False, None),
+        ("Historical Approved (44 features)", True, False, None),
+        ("Selected signal model (10 features)", False, True, XGBOOST_SIGNAL_FEATURES),
     ]
 
     results: List[XGBoostExperimentResult] = []
@@ -219,20 +227,22 @@ def run_all_xgboost_experiments() -> List[XGBoostExperimentResult]:
     print("Expect moderate variance due to sample size (n=38: 19 suspicious, 19 legitimate).")
     print("================================================================================")
 
-    for name, use_g, use_x in experiments:
+    for name, use_g, use_x, feature_names in experiments:
         res = evaluate_loso_xgboost(
             include_group_g=use_g,
             include_experimental_group_x=use_x,
             feature_store=fs,
             name=name,
+            feature_names=feature_names,
         )
         results.append(res)
 
         print(f"\n--- {res.name} ---")
         print(f"Features:            {res.feature_count} features")
         print(f"ROC-AUC:             {res.roc_auc_mean:.4f} ± {res.roc_auc_std:.4f}")
-        print(f"Precision:           {res.precision_mean:.4f} ± {res.precision_std:.4f}")
-        print(f"Recall:              {res.recall_mean:.4f} ± {res.recall_std:.4f}")
+        print(f"Decision threshold:  suspicious probability >= {res.decision_threshold:.2f}")
+        print(f"Precision @ cutoff:  {res.precision_mean:.4f} ± {res.precision_std:.4f}")
+        print(f"Recall @ cutoff:     {res.recall_mean:.4f} ± {res.recall_std:.4f}")
         print(f"F1-Score:            {res.f1_mean:.4f} ± {res.f1_std:.4f}")
         print(f"Accuracy:            {res.accuracy:.4f}")
         print(f"S19 LOSO Prediction: Prob={res.s19_result['predicted_prob']:.4f} (True=1, Pred={res.s19_result['predicted_class']}) -> {'CORRECT' if res.s19_result['correct'] else 'WRONG'}")
