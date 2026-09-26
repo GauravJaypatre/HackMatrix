@@ -1,0 +1,16 @@
+# Core Machine Learning & Explainability
+xgboost==1.7.6
+shap>=0.42.0
+scikit-learn>=1.2.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Graph Intelligence & Network Analysis
+networkx>=3.0
+node2vec>=0.4.6
+scipy>=1.10.0
+
+# Backend & Investigation API
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
