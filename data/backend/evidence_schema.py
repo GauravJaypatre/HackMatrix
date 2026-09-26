@@ -1,0 +1,397 @@
+"""
+evidence_schema.py — Evidence Object Schema & Builder for Alert Investigations
+
+Defines the target JSON data contract for explainable, evidence-backed alerts
+connecting employees, access rights, accounts, customers, and transactions.
+
+Target Schema:
+{
+  "alert_id": str,
+  "account_ids": list[str],
+  "employee_id": str | None,
+  "risk_tier": str,          # PLACEHOLDER until risk fusion exists
+  "risk_score": float,       # PLACEHOLDER until risk fusion exists
+  "signals": {
+      "rule_engine": {},     # PLACEHOLDER - will be populated from Member 2
+      "ml_model": {},        # PLACEHOLDER - will be populated from Member 2  
+      "graph_intelligence": {}   # POPULATE THIS NOW from Part 3's output
+  },
+  "evidence_subgraph": {"nodes": [], "edges": []},
+  "timeline": [],
+  "explanation": str
+}
+"""
+
+import sys
+import json
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+import networkx as nx
+import pandas as pd
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
+# Path configuration
+BACKEND_DIR = Path(__file__).resolve().parent
+DATA_DIR = BACKEND_DIR.parent
+PROJECT_ROOT = DATA_DIR.parent
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+if str(DATA_DIR) not in sys.path:
+    sys.path.insert(0, str(DATA_DIR))
+
+GRAPH_DIR = DATA_DIR / "graph"
+INTEL_DIR = DATA_DIR / "graph_intel"
+ENTITIES_DIR = DATA_DIR / "entities"
+HR_DIR = DATA_DIR / "synthetic_hr"
+
+# Import Member 1 query utility
+try:
+    from data.graph.get_account_history import get_account_history
+except ImportError:
+    from graph.get_account_history import get_account_history
+
+
+def _load_graph_data():
+    """Load structural features, clusters, anomaly scores, and graph tables."""
+    scores_path = INTEL_DIR / "graph_anomaly_scores.csv"
+    struct_path = INTEL_DIR / "account_structural_features.csv"
+    clusters_path = INTEL_DIR / "account_clusters.csv"
+    nodes_path = GRAPH_DIR / "nodes.csv"
+    edges_path = GRAPH_DIR / "edges.csv"
+
+    scores_df = pd.read_csv(scores_path) if scores_path.exists() else pd.DataFrame()
+    struct_df = pd.read_csv(struct_path) if struct_path.exists() else pd.DataFrame()
+    clusters_df = pd.read_csv(clusters_path) if clusters_path.exists() else pd.DataFrame()
+    nodes_df = pd.read_csv(nodes_path) if nodes_path.exists() else pd.DataFrame()
+    edges_df = pd.read_csv(edges_path) if edges_path.exists() else pd.DataFrame()
+
+    return {
+        "scores": scores_df,
+        "struct": struct_df,
+        "clusters": clusters_df,
+        "nodes": nodes_df,
+        "edges": edges_df
+    }
+
+
+def build_partial_evidence_object(account_id: str) -> Dict[str, Any]:
+    """
+    Constructs a partially-filled alert evidence object for the specified account.
+    
+    Populates:
+    - alert_id: Unique alert identifier
+    - account_ids: List of linked accounts in the suspicious flow/cycle
+    - employee_id: Connected employee ID from get_account_history
+    - signals.graph_intelligence: Full topological metrics, anomaly score, and factors
+    - evidence_subgraph: Local investigation subgraph (nodes and edges)
+    - timeline: Chronological timeline of access, profile, and transactional events
+    - explanation: Human-readable narrative explaining graph intelligence findings
+    
+    Leaves placeholders:
+    - risk_tier: None (# PLACEHOLDER until risk fusion exists)
+    - risk_score: None (# PLACEHOLDER until risk fusion exists)
+    - signals.rule_engine: {} (# PLACEHOLDER - will be populated from Member 2)
+    - signals.ml_model: {} (# PLACEHOLDER - will be populated from Member 2)
+    """
+    acc_id = str(account_id).strip()
+    graph_data = _load_graph_data()
+    
+    # 1. Unified account history from Member 1's utility
+    history = get_account_history(acc_id)
+    
+    # 2. Extract employee_id
+    employee_id: Optional[str] = None
+    if history.get("employees"):
+        employee_id = str(history["employees"][0].get("employee_id"))
+    elif history.get("access_events"):
+        employee_id = str(history["access_events"][0].get("employee_id"))
+        
+    # 3. Graph Intelligence Signals (Parts 1-3)
+    scores_df = graph_data["scores"]
+    struct_df = graph_data["struct"]
+    clust_df = graph_data["clusters"]
+    
+    score_row = scores_df[scores_df["account_id"].astype(str) == acc_id]
+    struct_row = struct_df[struct_df["account_id"].astype(str) == acc_id]
+    clust_row = clust_df[clust_df["account_id"].astype(str) == acc_id]
+    
+    anomaly_score = float(score_row.iloc[0]["graph_anomaly_score"]) if not score_row.empty else 0.0
+    factors = str(score_row.iloc[0]["contributing_factors"]) if not score_row.empty else "No graph anomalies detected"
+    
+    struct_dict = {}
+    if not struct_row.empty:
+        r = struct_row.iloc[0]
+        struct_dict = {
+            "degree": int(r["degree"]),
+            "in_degree": int(r["in_degree"]),
+            "out_degree": int(r["out_degree"]),
+            "betweenness_centrality": float(r["betweenness_centrality"]),
+            "clustering_coefficient": float(r["clustering_coefficient"]),
+            "is_on_any_cycle": bool(r["is_on_any_cycle"]),
+            "num_connected_employees": int(r["num_connected_employees"])
+        }
+        
+    clust_dict = {}
+    if not clust_row.empty:
+        r = clust_row.iloc[0]
+        clust_dict = {
+            "cluster_label": int(r["cluster_label"]),
+            "cluster_size": int(r["cluster_size"]),
+            "is_outlier": bool(r["is_outlier"])
+        }
+        
+    graph_intel_signal = {
+        "graph_anomaly_score": anomaly_score,
+        "contributing_factors": factors,
+        "structural_metrics": struct_dict,
+        "clustering_metrics": clust_dict
+    }
+    
+    # 4. Determine involved account_ids (primary + circular counterparties + scenario payees)
+    involved_accounts = [acc_id]
+    edges_df = graph_data["edges"]
+    nodes_df = graph_data["nodes"]
+    
+    # If participating in a cycle, find the cycle counterparties directly
+    synth_tx_ids = set()
+    if struct_dict.get("is_on_any_cycle"):
+        sent_edges = edges_df[edges_df["edge_type"] == "SENT_TO"]
+        G_sent = nx.DiGraph()
+        for _, r in sent_edges.iterrows():
+            G_sent.add_edge(str(r["source_id"]), str(r["target_id"]))
+            
+        for cycle in nx.simple_cycles(G_sent, length_bound=6):
+            if len(cycle) >= 2 and acc_id in cycle:
+                for c_acc in cycle:
+                    if c_acc not in involved_accounts:
+                        involved_accounts.append(c_acc)
+                # Capture all transactions along the cycle ring
+                for i in range(len(cycle)):
+                    u = cycle[i]
+                    v = cycle[(i + 1) % len(cycle)]
+                    cycle_step_edges = sent_edges[
+                        (sent_edges["source_id"].astype(str) == u) &
+                        (sent_edges["target_id"].astype(str) == v)
+                    ]
+                    for _, c_row in cycle_step_edges.iterrows():
+                        try:
+                            meta = json.loads(c_row["metadata"]) if pd.notna(c_row["metadata"]) else {}
+                            t_id = meta.get("transaction_id")
+                            if t_id:
+                                synth_tx_ids.add(str(t_id))
+                        except Exception:
+                            pass
+                break
+                
+    # Add any counterparties from synthetic scenario transactions
+    synth_txns = [t for t in history.get("transactions", []) if t.get("is_synthetic")]
+    for tx in synth_txns:
+        fa = str(tx.get("from_account", ""))
+        ta = str(tx.get("to_account", ""))
+        tx_id = str(tx.get("transaction_id", ""))
+        if fa and fa not in involved_accounts:
+            involved_accounts.append(fa)
+        if ta and ta not in involved_accounts:
+            involved_accounts.append(ta)
+        if tx_id:
+            synth_tx_ids.add(tx_id)
+            
+    # 5. Build Evidence Subgraph
+    # Subgraph nodes: involved accounts, linked customer, employee, and scenario transactions
+    sub_node_ids = set(involved_accounts) | synth_tx_ids
+    if employee_id:
+        sub_node_ids.add(employee_id)
+    cust = history.get("customer")
+    if cust and cust.get("customer_id"):
+        sub_node_ids.add(str(cust["customer_id"]))
+            
+    # Extract node metadata from nodes.csv
+    sub_nodes = []
+    if not nodes_df.empty:
+        matched_nodes = nodes_df[nodes_df["node_id"].astype(str).isin(sub_node_ids)]
+        seen_keys = set()
+        for _, nr in matched_nodes.iterrows():
+            key = (str(nr["node_type"]), str(nr["node_id"]))
+            if key not in seen_keys:
+                seen_keys.add(key)
+                sub_nodes.append({
+                    "id": str(nr["node_id"]),
+                    "type": str(nr["node_type"]),
+                    "label": str(nr["label"])
+                })
+                
+    # Extract connecting edges from edges.csv
+    # Include: CHANGED_ACCESS, MANAGES, OWNS, INVOLVED_IN (for scenario txns),
+    # and SENT_TO edges between involved accounts
+    sub_edges = []
+    if not edges_df.empty:
+        matched_edges = edges_df[
+            edges_df["source_id"].astype(str).isin(sub_node_ids) &
+            edges_df["target_id"].astype(str).isin(sub_node_ids)
+        ]
+        for _, er in matched_edges.iterrows():
+            etype = str(er["edge_type"])
+            src = str(er["source_id"])
+            tgt = str(er["target_id"])
+            ts = str(er["timestamp"]) if pd.notna(er["timestamp"]) else None
+            meta_raw = er["metadata"]
+            try:
+                meta = json.loads(meta_raw) if pd.notna(meta_raw) and meta_raw else {}
+            except Exception:
+                meta = {"raw": str(meta_raw)}
+                
+            # For SENT_TO, keep synthetic/scenario transactions and inter-account cycle links
+            if etype == "SENT_TO":
+                is_synth = meta.get("is_synthetic", False)
+                # Keep synthetic edges or edges between distinct cycle accounts
+                if not is_synth and src == tgt:
+                    continue  # skip self-transfers
+                if not is_synth and not (src in involved_accounts and tgt in involved_accounts):
+                    continue
+                    
+            # For INVOLVED_IN, keep if related to scenario transactions
+            if etype == "INVOLVED_IN":
+                if tgt not in synth_tx_ids and src not in synth_tx_ids:
+                    continue
+                    
+            sub_edges.append({
+                "source": src,
+                "target": tgt,
+                "type": etype,
+                "timestamp": ts,
+                "metadata": meta
+            })
+            
+    # Deduplicate edges by (source, target, type, transaction_id if any)
+    unique_sub_edges = []
+    seen_edge_signatures = set()
+    for e in sub_edges:
+        tx_id = e["metadata"].get("transaction_id", "")
+        sig = (e["source"], e["target"], e["type"], tx_id)
+        if sig not in seen_edge_signatures:
+            seen_edge_signatures.add(sig)
+            unique_sub_edges.append(e)
+
+    evidence_subgraph = {
+        "nodes": sub_nodes,
+        "edges": unique_sub_edges
+    }
+    
+    # 6. Build Chronological Timeline
+    timeline = []
+    
+    # Access events
+    for ev in history.get("access_events", []):
+        timeline.append({
+            "timestamp": str(ev.get("timestamp")),
+            "event_type": "access_event",
+            "summary": f"Access modification by {ev.get('employee_id')}: {ev.get('action')} ({ev.get('old_value')} -> {ev.get('new_value')})",
+            "details": ev
+        })
+        
+    # Profile changes
+    for pr in history.get("profile_changes", []):
+        timeline.append({
+            "timestamp": str(pr.get("timestamp")),
+            "event_type": "profile_change",
+            "summary": f"Customer profile change by employee {pr.get('changed_by_employee_id')}: {pr.get('field_changed')} ({pr.get('old_value')} -> {pr.get('new_value')})",
+            "details": pr
+        })
+        
+    # Synthetic / Scenario Transactions
+    for tx in synth_txns:
+        amt = tx.get("amount_paid", 0.0)
+        curr = tx.get("payment_currency", "USD")
+        fmt = tx.get("payment_format", "Transfer")
+        timeline.append({
+            "timestamp": str(tx.get("timestamp")),
+            "event_type": "transaction",
+            "summary": f"Scenario transaction {tx.get('transaction_id')}: {tx.get('from_account')} -> {tx.get('to_account')} ({amt:,.2f} {curr} via {fmt})",
+            "details": tx
+        })
+        
+    # Sort timeline chronologically
+    timeline.sort(key=lambda x: str(x.get("timestamp", "")))
+    
+    # 7. Compose Explainable Evidence Narrative
+    explanation_parts = [
+        f"Alert for Account {acc_id} evaluated with Graph Intelligence Anomaly Score of {anomaly_score:.4f}."
+    ]
+    if factors:
+        explanation_parts.append(f"Contributing topological factors: {factors}.")
+        
+    if struct_dict.get("is_on_any_cycle"):
+        explanation_parts.append(
+            f"Network analysis confirms account {acc_id} participates in a closed circular layering cycle "
+            f"within the transaction network, returning funds back to the originating flow."
+        )
+    if employee_id:
+        explanation_parts.append(
+            f"Corroborating insider context: Linked to employee {employee_id} via internal access administration records."
+        )
+    if synth_txns:
+        explanation_parts.append(
+            f"Detected {len(synth_txns)} high-priority scenario transactions in close temporal proximity."
+        )
+        
+    explanation = " ".join(explanation_parts)
+
+    # 8. Assemble Full Evidence Object Matching Data Contract
+    evidence_object: Dict[str, Any] = {
+        "alert_id": f"ALT-{acc_id}",
+        "account_ids": involved_accounts,
+        "employee_id": employee_id,
+        "risk_tier": None,       # PLACEHOLDER until risk fusion exists (pending Member 2)
+        "risk_score": None,      # PLACEHOLDER until risk fusion exists (pending Member 2)
+        "signals": {
+            "rule_engine": {},   # PLACEHOLDER - will be populated from Member 2
+            "ml_model": {},      # PLACEHOLDER - will be populated from Member 2
+            "graph_intelligence": graph_intel_signal
+        },
+        "evidence_subgraph": evidence_subgraph,
+        "timeline": timeline,
+        "explanation": explanation
+    }
+
+    return evidence_object
+
+
+def demonstrate_s19_evidence():
+    """Build and display the partial evidence object for scenario S19."""
+    s19_account_id = "800085BF0"
+    print("=" * 80)
+    print(f"BUILDING PARTIAL EVIDENCE OBJECT FOR S19 ACCOUNT: {s19_account_id}")
+    print("=" * 80)
+    
+    evidence = build_partial_evidence_object(s19_account_id)
+    evidence_json = json.dumps(evidence, indent=2, ensure_ascii=False)
+    print(evidence_json)
+    
+    # Validation checks
+    assert evidence["alert_id"] == f"ALT-{s19_account_id}", "Alert ID mismatch"
+    assert s19_account_id in evidence["account_ids"], "Account ID not in account_ids"
+    assert evidence["employee_id"] == "EMP_0047", f"Expected EMP_0047, got {evidence['employee_id']}"
+    assert evidence["risk_tier"] is None, "risk_tier should be None placeholder"
+    assert evidence["risk_score"] is None, "risk_score should be None placeholder"
+    assert evidence["signals"]["rule_engine"] == {}, "rule_engine should be empty placeholder"
+    assert evidence["signals"]["ml_model"] == {}, "ml_model should be empty placeholder"
+    assert "graph_intelligence" in evidence["signals"], "graph_intelligence signal missing"
+    assert evidence["signals"]["graph_intelligence"]["graph_anomaly_score"] > 0.5, "Expected high anomaly score for S19"
+    assert len(evidence["evidence_subgraph"]["nodes"]) > 0, "Subgraph nodes empty"
+    assert len(evidence["evidence_subgraph"]["edges"]) > 0, "Subgraph edges empty"
+    assert len(evidence["timeline"]) > 0, "Timeline empty"
+    
+    print("\n" + "=" * 80)
+    print("S19 PARTIAL EVIDENCE OBJECT VALIDATION: ALL CHECKS PASSED ✅")
+    print("=" * 80)
+    return evidence
+
+
+if __name__ == "__main__":
+    demonstrate_s19_evidence()
