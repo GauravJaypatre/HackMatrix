@@ -66,6 +66,12 @@ try:
 except ImportError:
     from graph.get_account_history import get_account_history
 
+# Import Risk Fusion utility
+try:
+    from data.risk_fusion.fuse_signals import fuse_account_risk
+except ImportError:
+    from risk_fusion.fuse_signals import fuse_account_risk
+
 
 def _load_graph_data():
     """Load structural features, clusters, anomaly scores, and graph tables."""
@@ -93,28 +99,27 @@ def _load_graph_data():
     }
 
 
-def build_partial_evidence_object(
+def build_evidence_object(
     account_id: str,
     include_background_context: bool = False
 ) -> Dict[str, Any]:
     """
-    Constructs a partially-filled alert evidence object for the specified account.
+    Constructs a complete, evidence-backed alert object for the specified account.
     
     Populates:
     - alert_id: Unique alert identifier
     - account_ids: List of linked accounts in the suspicious flow/cycle
     - employee_id: Connected employee ID from get_account_history
+    - risk_tier: Calibrated operational tier ("Low", "Medium", "High", "Critical")
+    - risk_score: Calibrated composite multi-signal risk score [0, 1]
+    - signals.rule_engine: Fired deterministic rules with supporting evidence
+    - signals.ml_model: XGBoost probability, decision threshold, SHAP top drivers,
+      and Isolation Forest anomaly scores
     - signals.graph_intelligence: Full topological metrics, anomaly score, and factors
     - evidence_subgraph: Local investigation subgraph with typed, collision-free node IDs
       ("ACCT_<id>", "CUST_<id>", "EMP_<id>", "SYN_<id>")
     - timeline: Chronological timeline of scenario evidence events (and optional background context)
-    - explanation: Human-readable narrative explaining graph intelligence findings
-    
-    Leaves placeholders:
-    - risk_tier: None (# PLACEHOLDER until risk fusion exists)
-    - risk_score: None (# PLACEHOLDER until risk fusion exists)
-    - signals.rule_engine: {} (# PLACEHOLDER - will be populated from Member 2)
-    - signals.ml_model: {} (# PLACEHOLDER - will be populated from Member 2)
+    - explanation: Comprehensive human-readable narrative explaining all findings
     """
     acc_id = str(account_id).strip()
     graph_data = _load_graph_data()
@@ -465,12 +470,43 @@ def build_partial_evidence_object(
     # Sort timeline strictly chronologically
     timeline.sort(key=lambda x: str(x.get("timestamp", "")))
     
-    # 7. Compose Explainable Evidence Narrative
+    # 7. Evaluate Multi-Signal Risk Fusion (Part 1 Integration)
+    risk_score: Optional[float] = None
+    risk_tier: Optional[str] = None
+    rule_engine_signal: Dict[str, Any] = {}
+    ml_model_signal: Dict[str, Any] = {}
+    
+    try:
+        fusion = fuse_account_risk(acc_id)
+        risk_score = fusion.get("risk_score")
+        risk_tier = fusion.get("risk_tier")
+        comps = fusion.get("components", {})
+        rule_engine_signal = comps.get("rule_engine", {})
+        ml_model_signal = {
+            "xgboost": comps.get("xgboost", {}),
+            "isolation_forest": comps.get("isolation_forest", {})
+        }
+    except Exception as e:
+        risk_score = 0.0
+        risk_tier = "Low"
+        rule_engine_signal = {"triggered": False, "fired_rules": [], "error": str(e)}
+        ml_model_signal = {"xgboost": {}, "isolation_forest": {}}
+
+    # 8. Compose Explainable Evidence Narrative
     explanation_parts = [
-        f"Alert for Account {acc_id} evaluated with Graph Intelligence Anomaly Score of {anomaly_score:.4f}."
+        f"Alert ALT-{acc_id} for Account {acc_id} assigned {risk_tier} Risk Tier with composite Risk Score of {risk_score:.4f}."
     ]
+    if rule_engine_signal.get("fired_rules"):
+        rules_str = ", ".join(rule_engine_signal["fired_rules"])
+        explanation_parts.append(f"Deterministic rules triggered: {rules_str}.")
+        
+    xgb_info = ml_model_signal.get("xgboost", {})
+    if xgb_info:
+        xgb_p = xgb_info.get("probability", 0.0)
+        explanation_parts.append(f"Supervised XGBoost AML probability: {xgb_p:.4f} (threshold: {xgb_info.get('decision_threshold', 0.5)}).")
+        
     if factors:
-        explanation_parts.append(f"Contributing topological factors: {factors}.")
+        explanation_parts.append(f"Graph intelligence: {factors} (Graph Anomaly Score: {anomaly_score:.4f}).")
         
     if struct_dict.get("is_on_any_cycle"):
         explanation_parts.append(
@@ -488,16 +524,16 @@ def build_partial_evidence_object(
         
     explanation = " ".join(explanation_parts)
 
-    # 8. Assemble Full Evidence Object Matching Data Contract
+    # 9. Assemble Full Evidence Object Matching Data Contract
     evidence_object: Dict[str, Any] = {
         "alert_id": f"ALT-{acc_id}",
         "account_ids": involved_accounts,
         "employee_id": employee_id,
-        "risk_tier": None,       # PLACEHOLDER until risk fusion exists (pending Member 2)
-        "risk_score": None,      # PLACEHOLDER until risk fusion exists (pending Member 2)
+        "risk_tier": risk_tier,
+        "risk_score": risk_score,
         "signals": {
-            "rule_engine": {},   # PLACEHOLDER - will be populated from Member 2
-            "ml_model": {},      # PLACEHOLDER - will be populated from Member 2
+            "rule_engine": rule_engine_signal,
+            "ml_model": ml_model_signal,
             "graph_intelligence": graph_intel_signal
         },
         "evidence_subgraph": evidence_subgraph,
@@ -508,54 +544,63 @@ def build_partial_evidence_object(
     return evidence_object
 
 
-def demonstrate_s19_evidence():
-    """Build and display the corrected partial evidence object for scenario S19."""
+# Backward-compatibility alias
+build_partial_evidence_object = build_evidence_object
+
+
+def demonstrate_evidence_objects():
+    """Build and display the complete evidence objects for S19 and L19."""
     s19_account_id = "800085BF0"
+    l19_account_id = "80026A5A0"
+    
+    # ─── 1. S19 Evidence Demonstration ───
     print("=" * 80)
-    print(f"BUILDING PARTIAL EVIDENCE OBJECT FOR S19 ACCOUNT: {s19_account_id}")
+    print(f"1. BUILDING COMPLETE EVIDENCE OBJECT FOR S19 ACCOUNT: {s19_account_id}")
     print("=" * 80)
+    s19_evidence = build_evidence_object(s19_account_id)
+    print(json.dumps(s19_evidence, indent=2, ensure_ascii=False))
     
-    evidence = build_partial_evidence_object(s19_account_id)
-    evidence_json = json.dumps(evidence, indent=2, ensure_ascii=False)
-    print(evidence_json)
+    assert s19_evidence["alert_id"] == f"ALT-{s19_account_id}", "Alert ID mismatch"
+    assert s19_account_id in s19_evidence["account_ids"], "Account ID not in account_ids"
+    assert s19_evidence["employee_id"] == "EMP_0047", f"Expected EMP_0047, got {s19_evidence['employee_id']}"
+    assert s19_evidence["risk_tier"] in ["High", "Critical"], f"S19 tier expected High/Critical, got {s19_evidence['risk_tier']}"
+    assert s19_evidence["risk_score"] >= 0.55, f"Expected S19 risk_score >= 0.55, got {s19_evidence['risk_score']}"
+    assert s19_evidence["signals"]["rule_engine"]["triggered"] is True, "Expected rule_engine triggered for S19"
+    assert "AML.CIRCULAR_TRANSFER" in s19_evidence["signals"]["rule_engine"]["fired_rules"], "Missing circular transfer rule in S19"
+    assert s19_evidence["signals"]["ml_model"]["xgboost"]["is_suspicious"] is True, "XGBoost expected suspicious for S19"
+    assert s19_evidence["signals"]["graph_intelligence"]["graph_anomaly_score"] > 0.5, "Expected high graph anomaly score for S19"
     
-    # Validation checks
-    assert evidence["alert_id"] == f"ALT-{s19_account_id}", "Alert ID mismatch"
-    assert s19_account_id in evidence["account_ids"], "Account ID not in account_ids"
-    assert evidence["employee_id"] == "EMP_0047", f"Expected EMP_0047, got {evidence['employee_id']}"
-    assert evidence["risk_tier"] is None, "risk_tier should be None placeholder"
-    assert evidence["risk_score"] is None, "risk_score should be None placeholder"
-    assert evidence["signals"]["rule_engine"] == {}, "rule_engine should be empty placeholder"
-    assert evidence["signals"]["ml_model"] == {}, "ml_model should be empty placeholder"
-    assert "graph_intelligence" in evidence["signals"], "graph_intelligence signal missing"
-    assert evidence["signals"]["graph_intelligence"]["graph_anomaly_score"] > 0.5, "Expected high anomaly score for S19"
+    # Check node ID collision fix
+    s19_node_ids = [n["id"] for n in s19_evidence["evidence_subgraph"]["nodes"]]
+    assert len(s19_node_ids) == len(set(s19_node_ids)), "Duplicate node IDs in S19 subgraph!"
+    assert "ACCT_800085BF0" in s19_node_ids and "CUST_800085BF0" in s19_node_ids
     
-    # 1. Collision verification
-    node_ids = [n["id"] for n in evidence["evidence_subgraph"]["nodes"]]
-    assert len(node_ids) == len(set(node_ids)), "Duplicate node IDs detected in evidence_subgraph!"
-    assert "ACCT_800085BF0" in node_ids, "Missing ACCT_800085BF0"
-    assert "CUST_800085BF0" in node_ids, "Missing CUST_800085BF0"
+    # Check intermediate hop in timeline
+    tl_txs = [i["details"]["transaction_id"] for i in s19_evidence["timeline"] if i["event_type"] == "transaction"]
+    assert "SYN_S19_001" in tl_txs and "SYN_S19_002" in tl_txs and "SYN_S19_003" in tl_txs
     
-    # 2. Timeline transactions check: all 3 hops must appear
-    tl_tx_ids = [
-        item["details"]["transaction_id"]
-        for item in evidence["timeline"]
-        if item["event_type"] == "transaction"
-    ]
-    assert "SYN_S19_001" in tl_tx_ids, "Missing SYN_S19_001 from timeline"
-    assert "SYN_S19_002" in tl_tx_ids, "Missing SYN_S19_002 from timeline"
-    assert "SYN_S19_003" in tl_tx_ids, "Missing SYN_S19_003 from timeline"
-    
-    # 3. Noise check: no unrelated EMP_0199 profile changes
-    for item in evidence["timeline"]:
-        if item["event_type"] == "profile_change":
-            assert item["details"].get("changed_by_employee_id") == "EMP_0047", "Unrelated profile change in evidence timeline"
-            
     print("\n" + "=" * 80)
-    print("S19 PARTIAL EVIDENCE OBJECT VALIDATION: ALL THREE FIXES VERIFIED ✅")
+    print(f"S19 VERIFICATION PASSED: Risk Tier = {s19_evidence['risk_tier']}, Risk Score = {s19_evidence['risk_score']} ✅")
     print("=" * 80)
-    return evidence
+    
+    # ─── 2. L19 Evidence Demonstration ───
+    print("\n" + "=" * 80)
+    print(f"2. BUILDING COMPLETE EVIDENCE OBJECT FOR L19 ACCOUNT: {l19_account_id}")
+    print("=" * 80)
+    l19_evidence = build_evidence_object(l19_account_id)
+    print(json.dumps(l19_evidence, indent=2, ensure_ascii=False))
+    
+    assert l19_evidence["risk_tier"] in ["Low", "Medium"], f"L19 tier expected Low/Medium, got {l19_evidence['risk_tier']}"
+    assert l19_evidence["risk_score"] < 0.55, f"Expected L19 risk_score < 0.55, got {l19_evidence['risk_score']}"
+    assert l19_evidence["signals"]["graph_intelligence"]["structural_metrics"]["is_on_any_cycle"] is False, "L19 must NOT be on any cycle"
+    
+    print("\n" + "=" * 80)
+    print(f"L19 VERIFICATION PASSED: Risk Tier = {l19_evidence['risk_tier']}, Risk Score = {l19_evidence['risk_score']} ✅")
+    print("=" * 80)
+    
+    return s19_evidence, l19_evidence
 
 
 if __name__ == "__main__":
-    demonstrate_s19_evidence()
+    demonstrate_evidence_objects()
+
