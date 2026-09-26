@@ -6,7 +6,7 @@ import pandas as pd
 
 from data.detection.models import RuleResult
 from data.ml.features.account_features import LEAKAGE_EXCLUSIONS
-from data.ml.features.feature_store import FeatureStore
+from data.ml.features.feature_store import FeatureStore, XGBOOST_SIGNAL_FEATURES
 from data.ml.models.xgboost_classifier import XGBoostDetector
 from data.ml.evaluation.xgboost_eval import evaluate_loso_xgboost
 
@@ -56,6 +56,19 @@ class TestXGBoostPipeline(unittest.TestCase):
         self.assertEqual(X2.shape[1], 44)
         self.assertEqual(X3.shape[1], 45)
         self.assertEqual(X4.shape[1], 48)
+
+    def test_signal_focused_feature_contract(self):
+        """The selected Member 3 model uses only the persisted 10-feature contract."""
+        X, _, _ = self.store.get_xgboost_dataset(
+            include_group_g=False,
+            include_experimental_group_x=True,
+            feature_names=XGBOOST_SIGNAL_FEATURES,
+        )
+        self.assertEqual(list(X.columns), XGBOOST_SIGNAL_FEATURES)
+        self.assertEqual(X.shape, (38, 10))
+        self.assertNotIn("privilege_change_triggered", X.columns)
+        self.assertNotIn("circular_transfer_triggered", X.columns)
+        self.assertNotIn("transaction_splitting_triggered", X.columns)
 
     def test_detector_fit_predict_and_shap(self):
         """Verify detector trains and produces valid probabilities and SHAP explanations."""

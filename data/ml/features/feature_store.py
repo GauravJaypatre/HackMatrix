@@ -15,6 +15,19 @@ from data.detection.validate_against_ground_truth import (
     load_runtime_context,
 )
 
+XGBOOST_SIGNAL_FEATURES = [
+    "txn_density",
+    "max_amount_zscore",
+    "cross_currency_fraction",
+    "unique_counterparties_out",
+    "sub_threshold_fraction",
+    "profile_change_rate",
+    "injected_txn_count",
+    "injected_mean_amount",
+    "injected_sub_threshold_fraction",
+    "injected_wire_fraction",
+]
+
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2]
 
 
@@ -129,6 +142,7 @@ class FeatureStore:
         self,
         include_group_g: bool = False,
         include_experimental_group_x: bool = False,
+        feature_names: Optional[List[str]] = None,
     ) -> Tuple[pd.DataFrame, pd.Series, pd.DataFrame]:
         """Return the 38 labeled scenario accounts for XGBoost supervised training and evaluation.
 
@@ -145,6 +159,11 @@ class FeatureStore:
         scenario_acc_ids = scenarios["primary_account_id"].tolist()
 
         X_labeled = features.loc[scenario_acc_ids].copy()
+        if feature_names is not None:
+            missing_features = [name for name in feature_names if name not in X_labeled.columns]
+            if missing_features:
+                raise ValueError(f"Requested XGBoost features are unavailable: {missing_features}")
+            X_labeled = X_labeled.loc[:, feature_names]
         scenario_meta = scenarios.set_index("primary_account_id").loc[scenario_acc_ids].copy()
         y_labeled = scenario_meta["label"].copy()
         return X_labeled, y_labeled, scenario_meta
