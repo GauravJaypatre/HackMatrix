@@ -402,7 +402,7 @@ def train_and_save_final_model(
 ) -> Tuple[str, str, XGBoostDetector]:
     """Train the final agreed XGBoost model on all 38 labeled accounts and save versioned artifacts."""
     from pathlib import Path
-    from data.ml.features.feature_store import FeatureStore
+    from data.ml.features.feature_store import FeatureStore, XGBOOST_SIGNAL_FEATURES
 
     base_dir = Path(__file__).resolve().parent
     art_dir = Path(artifacts_dir) if artifacts_dir else base_dir / "artifacts"
@@ -412,7 +412,11 @@ def train_and_save_final_model(
     meta_path = str(art_dir / "xgboost_v1_metadata.json")
 
     fs = FeatureStore()
-    X, y, meta = fs.get_xgboost_dataset(include_group_g=True, include_experimental_group_x=False)
+    X, y, meta = fs.get_xgboost_dataset(
+        include_group_g=False,
+        include_experimental_group_x=True,
+        feature_names=XGBOOST_SIGNAL_FEATURES,
+    )
 
     clf = XGBoostDetector(
         n_estimators=40,
@@ -428,14 +432,42 @@ def train_and_save_final_model(
     clf.fit(X, y)
 
     extra_meta = {
+        "decision_threshold": 0.5,
+        "threshold_policy": "Flag as suspicious when suspicious_probability >= decision_threshold.",
+        "feature_set_name": "signal_focused_v1",
+        "historical_feature_sets": {
+            "Baseline": "41 Groups A-F features; excludes the three deterministic Group G rule flags.",
+            "Approved": "44 Groups A-G features; adds privilege-change, circular-transfer, and transaction-splitting rule flags for ablation comparison.",
+            "selected": "10 signal-focused features from Groups A, B, D, and X; Group G remains independent for Member 3 risk fusion.",
+        },
         "dataset_summary": {
             "total_accounts": len(X),
             "suspicious_accounts": int((y == 1).sum()),
             "legitimate_accounts": int((y == 0).sum()),
         },
-        "feature_groups_included": ["A", "B", "C", "D", "E", "F", "G"],
+        "feature_groups_included": ["A", "B", "D", "X"],
+        "feature_selection_rationale": {
+            "txn_density": "transaction velocity anomaly",
+            "max_amount_zscore": "high-value transfer outlier",
+            "cross_currency_fraction": "cross-border activity",
+            "unique_counterparties_out": "new-counterparty breadth proxy",
+            "sub_threshold_fraction": "transaction splitting",
+            "profile_change_rate": "privilege or profile-change activity",
+            "injected_txn_count": "observed post-event transaction velocity proxy",
+            "injected_mean_amount": "post-event high-value transfer context",
+            "injected_sub_threshold_fraction": "post-event transaction splitting",
+            "injected_wire_fraction": "post-event high-value and cross-border transfer channel",
+        },
     }
     saved_model, saved_meta = clf.save_model(model_path, meta_path, extra_metadata=extra_meta)
+
+    # Mirror artifacts to data/models/ for Member 3 convenience
+    import shutil
+    data_models_dir = fs.data_dir / "models"
+    data_models_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(saved_model, str(data_models_dir / "xgboost_v1.json"))
+    shutil.copyfile(saved_meta, str(data_models_dir / "xgboost_v1_metadata.json"))
+
     return saved_model, saved_meta, clf
 
 
@@ -443,11 +475,19 @@ def load_xgboost_model(
     artifacts_dir: Optional[Any] = None,
     version: str = "v1",
 ) -> XGBoostDetector:
-    """Load a versioned XGBoost model from the artifacts directory."""
+    """Load a versioned XGBoost model from the artifacts directory or data/models."""
     from pathlib import Path
 
     base_dir = Path(__file__).resolve().parent
-    art_dir = Path(artifacts_dir) if artifacts_dir else base_dir / "artifacts"
+    if artifacts_dir:
+        art_dir = Path(artifacts_dir)
+    else:
+        # Check standard data/models/ first, fallback to data/ml/models/artifacts/
+        data_models = base_dir.parents[1] / "models"
+        if (data_models / f"xgboost_{version}.json").exists():
+            art_dir = data_models
+        else:
+            art_dir = base_dir / "artifacts"
 
     model_path = art_dir / f"xgboost_{version}.json"
     meta_path = art_dir / f"xgboost_{version}_metadata.json"
