@@ -270,10 +270,10 @@ export default function InvestigationPage({ params }: PageProps) {
             title="Isolation Forest"
             subtitle="Unsupervised Outlier"
             value={formatScore(iforestSig?.anomaly_score)}
-            status={iforestSig?.is_outlier ? "warning" : "clear"}
+            status={iforestSig?.is_anomaly ? "warning" : "clear"}
             icon={Layers}
             weight="14% WEIGHT"
-            detail={iforestSig?.interpretation || (iforestSig?.is_outlier ? "Outlier detected in multi-feature transaction space" : "Normal transaction behavior")}
+            detail={iforestSig?.interpretation || (iforestSig?.is_anomaly ? "Outlier detected in multi-feature transaction space" : "Normal transaction behavior")}
           />
 
           {/* Signal 4: Graph Intelligence */}
@@ -561,13 +561,13 @@ export default function InvestigationPage({ params }: PageProps) {
                 <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-3 font-mono text-xs">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Outlier Status:</span>
-                    <span className={iforestSig?.is_outlier ? "text-amber-400 font-bold" : "text-slate-400"}>
-                      {iforestSig?.is_outlier ? "ANOMALOUS OUTLIER" : "WITHIN NORMAL RANGE"}
+                    <span className={iforestSig?.is_anomaly ? "text-amber-400 font-bold" : "text-slate-400"}>
+                      {iforestSig?.is_anomaly ? "ANOMALOUS OUTLIER" : "WITHIN NORMAL RANGE"}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Anomaly Threshold:</span>
-                    <span className="text-slate-200">{iforestSig?.decision_threshold ?? 0.60}</span>
+                    <span className="text-slate-200">{iforestSig?.threshold ?? 0.60}</span>
                   </div>
                   <p className="text-slate-400 pt-2 border-t border-slate-800 leading-relaxed">
                     {iforestSig?.interpretation ||
@@ -614,17 +614,16 @@ export default function InvestigationPage({ params }: PageProps) {
           {/* Metrics Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { label: "Cycle Member", value: graphSig?.structural_metrics?.in_cycle ? "YES" : "NO", highlight: graphSig?.structural_metrics?.in_cycle },
-              { label: "Cycle Length", value: graphSig?.structural_metrics?.cycle_length ?? "N/A" },
-              { label: "Total Degree", value: graphSig?.structural_metrics?.total_degree ?? 0 },
+              { label: "Cycle Member", value: graphSig?.structural_metrics?.is_on_any_cycle ? "YES" : "NO", highlight: graphSig?.structural_metrics?.is_on_any_cycle },
+              { label: "Degree", value: graphSig?.structural_metrics?.degree ?? 0 },
               { label: "In Degree", value: graphSig?.structural_metrics?.in_degree ?? 0 },
               { label: "Out Degree", value: graphSig?.structural_metrics?.out_degree ?? 0 },
               { label: "Betweenness", value: formatScore(graphSig?.structural_metrics?.betweenness_centrality) },
               { label: "Clustering Coeff", value: formatScore(graphSig?.structural_metrics?.clustering_coefficient) },
-              { label: "DBSCAN Cluster", value: graphSig?.structural_metrics?.dbscan_cluster ?? "Noise" },
-              { label: "Cluster Outlier", value: graphSig?.structural_metrics?.cluster_is_outlier ? "TRUE" : "FALSE" },
-              { label: "Cluster Size", value: graphSig?.structural_metrics?.cluster_size ?? "N/A" },
-              { label: "Insider Links", value: graphSig?.structural_metrics?.employee_connections_count ?? 0, highlight: (graphSig?.structural_metrics?.employee_connections_count || 0) > 0 },
+              { label: "DBSCAN Cluster", value: graphSig?.clustering_metrics?.cluster_label !== undefined ? (graphSig.clustering_metrics.cluster_label === -1 ? "Noise" : graphSig.clustering_metrics.cluster_label) : "Noise" },
+              { label: "Cluster Outlier", value: graphSig?.clustering_metrics?.is_outlier ? "TRUE" : "FALSE" },
+              { label: "Cluster Size", value: graphSig?.clustering_metrics?.cluster_size ?? "N/A" },
+              { label: "Insider Links", value: graphSig?.structural_metrics?.num_connected_employees ?? 0, highlight: (graphSig?.structural_metrics?.num_connected_employees || 0) > 0 },
               { label: "Composite Graph Score", value: formatScore(graphSig?.graph_anomaly_score), highlight: (graphSig?.graph_anomaly_score || 0) > 0.4 },
             ].map((m, idx) => (
               <div key={idx} className="p-3.5 rounded-lg bg-slate-900/80 border border-slate-800">
