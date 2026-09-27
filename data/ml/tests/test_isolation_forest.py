@@ -56,16 +56,13 @@ class TestIsolationForestPipeline(unittest.TestCase):
         self.assertTrue(np.all(np.isfinite(matrix.values)), "Feature matrix contains non-finite values")
 
     def test_group_x_toggle_ablation(self):
-        """Verify feature dimensions when toggling experimental Group X."""
+        """Verify feature dimensions when toggling experimental Group X (removed for leakage)."""
         names_off = self.store.get_feature_names(include_experimental_group_x=False)
         names_on = self.store.get_feature_names(include_experimental_group_x=True)
 
         self.assertEqual(len(names_off), 39, f"Expected 39 features without Group X, got {len(names_off)}")
-        self.assertEqual(len(names_on), 43, f"Expected 43 features with Group X, got {len(names_on)}")
-
-        diff = set(names_on) - set(names_off)
-        expected_diff = set(FEATURE_GROUPS["group_x"])
-        self.assertEqual(diff, expected_diff, f"Group X diff mismatch: {diff} vs {expected_diff}")
+        self.assertEqual(len(names_on), 39, f"Expected 39 features with Group X removed, got {len(names_on)}")
+        self.assertNotIn("group_x", FEATURE_GROUPS)
 
     def test_isolation_forest_fit_and_score(self):
         """Verify detector trains strictly on background accounts and produces valid anomaly scores."""

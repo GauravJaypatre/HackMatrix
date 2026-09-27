@@ -215,7 +215,7 @@ def run_all_xgboost_experiments() -> List[XGBoostExperimentResult]:
     experiments = [
         ("Historical Baseline (41 features)", False, False, None),
         ("Historical Approved (44 features)", True, False, None),
-        ("Selected signal model (10 features)", False, True, XGBOOST_SIGNAL_FEATURES),
+        ("Selected signal model (10 features)", False, False, XGBOOST_SIGNAL_FEATURES),
     ]
 
     results: List[XGBoostExperimentResult] = []

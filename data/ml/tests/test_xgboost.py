@@ -54,14 +54,15 @@ class TestXGBoostPipeline(unittest.TestCase):
 
         self.assertEqual(X1.shape[1], 41)
         self.assertEqual(X2.shape[1], 44)
-        self.assertEqual(X3.shape[1], 45)
-        self.assertEqual(X4.shape[1], 48)
+        # Group X was removed to eliminate synthetic leakage, so dimensions remain 41 and 44
+        self.assertEqual(X3.shape[1], 41)
+        self.assertEqual(X4.shape[1], 44)
 
     def test_signal_focused_feature_contract(self):
         """The selected Member 3 model uses only the persisted 10-feature contract."""
         X, _, _ = self.store.get_xgboost_dataset(
             include_group_g=False,
-            include_experimental_group_x=True,
+            include_experimental_group_x=False,
             feature_names=XGBOOST_SIGNAL_FEATURES,
         )
         self.assertEqual(list(X.columns), XGBOOST_SIGNAL_FEATURES)

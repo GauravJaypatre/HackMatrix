@@ -22,10 +22,10 @@ XGBOOST_SIGNAL_FEATURES = [
     "unique_counterparties_out",
     "sub_threshold_fraction",
     "profile_change_rate",
-    "injected_txn_count",
-    "injected_mean_amount",
-    "injected_sub_threshold_fraction",
-    "injected_wire_fraction",
+    "total_transaction_count",
+    "mean_amount",
+    "wire_fraction",
+    "access_event_rate",
 ]
 
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2]

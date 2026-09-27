@@ -414,7 +414,7 @@ def train_and_save_final_model(
     fs = FeatureStore()
     X, y, meta = fs.get_xgboost_dataset(
         include_group_g=False,
-        include_experimental_group_x=True,
+        include_experimental_group_x=False,
         feature_names=XGBOOST_SIGNAL_FEATURES,
     )
 
@@ -438,14 +438,14 @@ def train_and_save_final_model(
         "historical_feature_sets": {
             "Baseline": "41 Groups A-F features; excludes the three deterministic Group G rule flags.",
             "Approved": "44 Groups A-G features; adds privilege-change, circular-transfer, and transaction-splitting rule flags for ablation comparison.",
-            "selected": "10 signal-focused features from Groups A, B, D, and X; Group G remains independent for Member 3 risk fusion.",
+            "selected": "10 signal-focused un-leaked features from Groups A, B, C, and D; Group G remains independent for Member 3 risk fusion.",
         },
         "dataset_summary": {
             "total_accounts": len(X),
             "suspicious_accounts": int((y == 1).sum()),
             "legitimate_accounts": int((y == 0).sum()),
         },
-        "feature_groups_included": ["A", "B", "D", "X"],
+        "feature_groups_included": ["A", "B", "C", "D"],
         "feature_selection_rationale": {
             "txn_density": "transaction velocity anomaly",
             "max_amount_zscore": "high-value transfer outlier",
@@ -453,10 +453,10 @@ def train_and_save_final_model(
             "unique_counterparties_out": "new-counterparty breadth proxy",
             "sub_threshold_fraction": "transaction splitting",
             "profile_change_rate": "privilege or profile-change activity",
-            "injected_txn_count": "observed post-event transaction velocity proxy",
-            "injected_mean_amount": "post-event high-value transfer context",
-            "injected_sub_threshold_fraction": "post-event transaction splitting",
-            "injected_wire_fraction": "post-event high-value and cross-border transfer channel",
+            "total_transaction_count": "total transaction velocity across all activity",
+            "mean_amount": "mean transaction transfer value across all activity",
+            "wire_fraction": "fraction of transactions executed via wire transfers",
+            "access_event_rate": "insider access frequency and privilege intensity",
         },
     }
     saved_model, saved_meta = clf.save_model(model_path, meta_path, extra_metadata=extra_meta)
