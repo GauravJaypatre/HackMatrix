@@ -1,6 +1,6 @@
 """Account-level feature extraction for ML anomaly detection.
 
-Extracts feature groups A-E and experimental group X strictly from raw data tables,
+Extracts feature groups A-E strictly from raw data tables,
 with mandatory explicit leakage exclusion.
 """
 
@@ -84,12 +84,6 @@ FEATURE_GROUPS: Dict[str, List[str]] = {
         "circular_transfer_triggered",
         "transaction_splitting_triggered",
     ],
-    "group_x": [
-        "injected_txn_count",
-        "injected_mean_amount",
-        "injected_sub_threshold_fraction",
-        "injected_wire_fraction",
-    ],
 }
 
 
@@ -138,9 +132,9 @@ def compute_group_b_features(
     accounts_index: pd.Index,
     total_tx_counts: pd.Series,
 ) -> pd.DataFrame:
-    """Compute Group B: Real Transaction Aggregates.
+    """Compute Group B: Transaction Aggregates across all transactions (real + synthetic unified).
 
-    Source: data/entities/in_scope_real_transactions.csv
+    Source: data/entities/in_scope_real_transactions.csv and synthetic_hr/injected_transactions.csv
     Aggregates per account (sender and receiver views).
     """
     clean_tx = sanitize_input_dataframe(real_tx_df)
@@ -329,50 +323,6 @@ def compute_group_e_features(
     return features
 
 
-def compute_group_x_features(
-    injected_df: pd.DataFrame,
-    accounts_index: pd.Index,
-) -> pd.DataFrame:
-    """Compute Group X: EXPERIMENTAL Injected Transaction Features.
-
-    Source: data/synthetic_hr/injected_transactions.csv
-    Aggregates per from_account.
-    Explicitly drops scenario_id, source, is_laundering.
-    """
-    clean_inj = sanitize_input_dataframe(injected_df)
-    clean_inj["from_account"] = clean_inj["from_account"].astype(str)
-    clean_inj["amount_paid"] = pd.to_numeric(clean_inj["amount_paid"], errors="coerce").fillna(0.0)
-
-    grouped = clean_inj.groupby("from_account")
-    inj_count = grouped["transaction_id"].count()
-    inj_mean = grouped["amount_paid"].mean()
-
-    sub_thresh_mask = clean_inj["amount_paid"] < 10000.0
-    sub_thresh_counts = clean_inj[sub_thresh_mask].groupby("from_account")["transaction_id"].count()
-
-    wire_mask = clean_inj["payment_format"].astype(str).str.lower() == "wire"
-    wire_counts = clean_inj[wire_mask].groupby("from_account")["transaction_id"].count()
-
-    features = pd.DataFrame(index=accounts_index)
-    features["injected_txn_count"] = inj_count.reindex(accounts_index).fillna(0.0)
-    features["injected_mean_amount"] = inj_mean.reindex(accounts_index).fillna(0.0)
-
-    counts = features["injected_txn_count"].values
-    safe_counts = np.maximum(counts, 1.0)
-    features["injected_sub_threshold_fraction"] = np.where(
-        counts > 0,
-        sub_thresh_counts.reindex(accounts_index).fillna(0.0).values / safe_counts,
-        0.0,
-    )
-    features["injected_wire_fraction"] = np.where(
-        counts > 0,
-        wire_counts.reindex(accounts_index).fillna(0.0).values / safe_counts,
-        0.0,
-    )
-
-    return features
-
-
 def compute_group_f_features(
     customers_df: pd.DataFrame,
     accounts_df: pd.DataFrame,
@@ -468,7 +418,12 @@ def extract_all_features(
     total_tx_counts = df_a["total_transaction_count"]
     age_days = df_a["account_age_days"]
 
-    df_b = compute_group_b_features(real_tx_df, accounts_idx, total_tx_counts)
+    if injected_tx_df is not None and not injected_tx_df.empty:
+        all_tx_df = pd.concat([real_tx_df, injected_tx_df], ignore_index=True)
+    else:
+        all_tx_df = real_tx_df
+
+    df_b = compute_group_b_features(all_tx_df, accounts_idx, total_tx_counts)
     df_c = compute_group_c_features(access_events_df, accounts_idx, age_days)
     df_d = compute_group_d_features(profile_changes_df, accounts_idx, age_days)
     df_e = compute_group_e_features(employee_map_df, accounts_idx)
@@ -482,10 +437,6 @@ def extract_all_features(
     if include_group_g and rule_results is not None:
         df_g = compute_group_g_features(rule_results, accounts_idx)
         frames.append(df_g)
-
-    if include_experimental_group_x:
-        df_x = compute_group_x_features(injected_tx_df, accounts_idx)
-        frames.append(df_x)
 
     feature_matrix = pd.concat(frames, axis=1)
 

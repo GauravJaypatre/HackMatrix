@@ -48,23 +48,33 @@ export interface XGBoostSignal {
 
 export interface IsolationForestSignal {
   anomaly_score: number;
-  decision_threshold: number;
-  is_outlier: boolean;
+  threshold: number;
+  is_anomaly: boolean;
   interpretation?: string;
+  top_contributing_features?: Array<{
+    feature: string;
+    score_delta?: number;
+    value?: number | string;
+    baseline_median?: number;
+    iqr_deviation?: number;
+    direction?: string;
+  }>;
+}
+
+export interface ClusteringMetrics {
+  cluster_label?: number;
+  cluster_size?: number;
+  is_outlier?: boolean;
 }
 
 export interface StructuralMetrics {
+  degree?: number;
   in_degree?: number;
   out_degree?: number;
-  total_degree?: number;
   betweenness_centrality?: number;
   clustering_coefficient?: number;
-  in_cycle?: boolean;
-  cycle_length?: number;
-  dbscan_cluster?: number;
-  cluster_is_outlier?: boolean;
-  cluster_size?: number;
-  employee_connections_count?: number;
+  is_on_any_cycle?: boolean;
+  num_connected_employees?: number;
   [key: string]: unknown;
 }
 
@@ -74,6 +84,7 @@ export interface GraphIntelligenceSignal {
   cycle_membership?: boolean;
   betweenness_quantile?: number;
   structural_metrics: StructuralMetrics;
+  clustering_metrics?: ClusteringMetrics;
 }
 
 export interface AlertSignals {
